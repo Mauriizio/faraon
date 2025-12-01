@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ComponentProps, PropsWithChildren } from "react";
+import { ButtonHTMLAttributes, PropsWithChildren } from "react";
 
 const baseStyles =
   "btn-shine inline-flex items-center justify-center rounded-full bg-[#d4af37] px-5 py-3 text-sm font-semibold text-[#0a0a0a] shadow-[0_10px_35px_rgba(0,0,0,0.4)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_38px_rgba(0,0,0,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37]";
@@ -11,7 +11,8 @@ type CTAButtonProps = PropsWithChildren<
   {
     href?: string;
     variant?: "solid" | "ghost";
-  } & ComponentProps<"button">
+    className?: string;
+  } & ButtonHTMLAttributes<HTMLButtonElement>
 >;
 
 export function CTAButton({
@@ -19,20 +20,27 @@ export function CTAButton({
   variant = "solid",
   children,
   className = "",
-  ...props
+  type,
+  ...buttonProps
 }: CTAButtonProps) {
   const styles = `${variant === "solid" ? baseStyles : subtleStyles} ${className}`;
 
+  // Caso LINK (no pasamos props de botón al Link)
   if (href) {
     return (
-      <Link href={href} className={styles} {...props}>
+      <Link href={href} className={styles}>
         {children}
       </Link>
     );
   }
 
+  // Caso BOTÓN
   return (
-    <button className={styles} {...props}>
+    <button
+      type={type ?? "button"}
+      className={styles}
+      {...buttonProps}
+    >
       {children}
     </button>
   );
