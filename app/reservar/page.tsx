@@ -51,11 +51,15 @@ const services = [
   "Corte desgradado full servicio + barba pigmentada",
 ];
 
+const weekDayLabels = ["D", "L", "M", "X", "J", "V", "S"];
+
+const calendarRangeDays = 35;
+
 function buildAvailability(): DayAvailability[] {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  return Array.from({ length: 21 }, (_, idx) => {
+  return Array.from({ length: calendarRangeDays }, (_, idx) => {
     const date = new Date(today);
     date.setDate(today.getDate() + idx);
     const key = date.toISOString().split("T")[0];
@@ -75,24 +79,75 @@ function buildAvailability(): DayAvailability[] {
     else if (availableSlots.length === 0) status = "sin-cupos";
 
     const label = date.toLocaleDateString("es-ES", {
-      weekday: "short",
       day: "2-digit",
       month: "short",
     });
 
     return { date, key, label, status, availableSlots };
-  }).filter(({ date }) => date.getDay() !== 0); // Filtra domingos fuera de la grilla.
+  });
 }
 
 function statusBadgeClasses(status: AvailabilityStatus) {
-  if (status === "disponible") return "bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/40";
+  if (status === "disponible") return "bg-emerald-500/15 text-emerald-200 ring-1 ring-emerald-500/40";
   if (status === "sin-cupos") return "bg-rose-500/15 text-rose-200 ring-1 ring-rose-500/40";
   return "bg-[#4a1f2f]/30 text-[#f7f1e3] ring-1 ring-[#4a1f2f]/60";
 }
 
+function statusColor(status: AvailabilityStatus) {
+  if (status === "disponible") return "bg-emerald-500/20 text-emerald-100 ring-1 ring-emerald-500/40";
+  if (status === "sin-cupos") return "bg-rose-500/30 text-rose-100 ring-1 ring-rose-500/40";
+  return "bg-[#4a1f2f]/50 text-[#f7f1e3] ring-1 ring-[#4a1f2f]/70";
+}
+
 export default function ReservarPage() {
   const availability = useMemo(buildAvailability, []);
-  const [selectedDateKey, setSelectedDateKey] = useState<string>(availability[0]?.key);
+  const availabilityMap = useMemo(() => {
+    const map = new Map<string, DayAvailability>();
+    availability.forEach((day) => map.set(day.key, day));
+    return map;
+  }, [availability]);
+
+  const defaultDateKey = useMemo(
+    () => availability.find((day) => day.status === "disponible")?.key ?? availability[0]?.key,
+    [availability],
+  );
+
+  const startOfCalendar = useMemo(() => {
+    const base = new Date();
+    base.setHours(0, 0, 0, 0);
+    base.setDate(base.getDate() - base.getDay());
+    return base;
+  }, []);
+
+  const calendarDays = useMemo(() => {
+    return Array.from({ length: calendarRangeDays }, (_, idx) => {
+      const date = new Date(startOfCalendar);
+      date.setDate(startOfCalendar.getDate() + idx);
+      const key = date.toISOString().split("T")[0];
+      const existing = availabilityMap.get(key);
+
+      if (existing) return existing;
+
+      const isSunday = date.getDay() === 0;
+      return {
+        date,
+        key,
+        label: date.toLocaleDateString("es-ES", { day: "2-digit", month: "short" }),
+        status: isSunday ? "feriado" : "sin-cupos",
+        availableSlots: [],
+      } satisfies DayAvailability;
+    });
+  }, [availabilityMap, startOfCalendar]);
+
+  const weeks = useMemo(() => {
+    const chunks: DayAvailability[][] = [];
+    for (let i = 0; i < calendarDays.length; i += 7) {
+      chunks.push(calendarDays.slice(i, i + 7));
+    }
+    return chunks;
+  }, [calendarDays]);
+
+  const [selectedDateKey, setSelectedDateKey] = useState<string | undefined>(defaultDateKey);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [service, setService] = useState(services[0]);
   const [name, setName] = useState("");
@@ -101,7 +156,9 @@ export default function ReservarPage() {
   const [statusMessage, setStatusMessage] = useState<string>("");
   const [submitting, setSubmitting] = useState(false);
 
-  const selectedDay = availability.find((day) => day.key === selectedDateKey);
+  const selectedDay = selectedDateKey
+    ? availabilityMap.get(selectedDateKey) ?? calendarDays.find((day) => day.key === selectedDateKey)
+    : undefined;
 
   const isSubmitDisabled =
     !selectedDay ||
@@ -163,39 +220,78 @@ export default function ReservarPage() {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {availability.map((day) => {
-              const isActive = day.key === selectedDateKey;
-              const badge = statusBadgeClasses(day.status);
-              const disabled = day.status !== "disponible";
-              return (
-                <button
-                  key={day.key}
-                  onClick={() => {
-                    setSelectedDateKey(day.key);
-                    setSelectedSlot(null);
-                  }}
-                  disabled={disabled}
-                  className={`group rounded-2xl border px-3 py-3 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
-                    isActive ? "border-[#d4af37] bg-[#0f0b0b] shadow-[0_0_0_1px_rgba(212,175,55,0.35)]" : "border-[#d4af37]/20 bg-[#0b0b0b]/70"
-                  } ${disabled ? "opacity-60" : "hover:border-[#d4af37]/60"}`}
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="text-sm font-semibold text-[#f7f1e3]">{day.label}</p>
-                    <span className={`rounded-full px-2 py-1 text-[11px] font-semibold ${badge}`}>
-                      {day.status === "disponible"
-                        ? `${day.availableSlots.length} cupos`
-                        : day.status === "feriado"
-                          ? "Feriado"
-                          : "Sin cupos"}
-                    </span>
-                  </div>
-                  <p className="mt-2 text-xs text-[#d8d0c0]">
-                    {day.status === "disponible" ? "Tap para ver horarios" : "No disponible"}
-                  </p>
-                </button>
-              );
-            })}
+          <div className="flex flex-wrap items-center gap-3 text-xs text-[#d8d0c0]">
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-3 py-1 ring-1 ring-[#d4af37]/20">
+              <span className="h-3 w-3 rounded-full bg-emerald-400/80 ring-2 ring-emerald-500/40" />
+              Disponible
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-3 py-1 ring-1 ring-[#d4af37]/20">
+              <span className="h-3 w-3 rounded-full bg-rose-500/80 ring-2 ring-rose-500/40" />
+              Sin cupos / bloqueado
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-3 py-1 ring-1 ring-[#d4af37]/20">
+              <span className="h-3 w-3 rounded-full bg-[#4a1f2f] ring-2 ring-[#4a1f2f]/60" />
+              Feriado / domingo
+            </span>
+          </div>
+
+          <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-4 sm:p-5">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-[#d4af37]">Calendario</p>
+                <p className="text-sm text-[#d8d0c0]">Vista compacta 5 semanas · toca un día para ver horarios.</p>
+              </div>
+              <span className="rounded-full bg-[#0f0b0b] px-3 py-1 text-xs font-semibold text-[#f7f1e3] ring-1 ring-[#d4af37]/30">
+                {selectedDay?.date.toLocaleDateString("es-ES", { month: "long", year: "numeric" })}
+              </span>
+            </div>
+
+            <div className="mb-2 grid grid-cols-7 text-center text-[11px] font-semibold uppercase tracking-wide text-[#d8d0c0]">
+              {weekDayLabels.map((label) => (
+                <span key={label} className="py-1">
+                  {label}
+                </span>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-7 gap-2 sm:gap-3">
+              {weeks.map((week, idx) => (
+                <div key={idx} className="contents">
+                  {week.map((day) => {
+                    const isActive = day.key === selectedDateKey;
+                    const disabled = day.status !== "disponible";
+                    return (
+                      <button
+                        key={day.key}
+                        onClick={() => {
+                          if (disabled) return;
+                          setSelectedDateKey(day.key);
+                          setSelectedSlot(null);
+                        }}
+                        disabled={disabled}
+                        className={`group flex min-h-[70px] flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-center text-xs font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
+                          statusColor(day.status)
+                        } ${isActive ? "shadow-[0_0_0_1px_rgba(212,175,55,0.6),0_10px_30px_rgba(0,0,0,0.35)]" : "shadow-[0_10px_30px_rgba(0,0,0,0.25)]"} ${
+                          disabled ? "opacity-70" : "hover:scale-[1.02]"
+                        }`}
+                        aria-label={`Día ${day.label} ${day.status === "disponible" ? "disponible" : "no disponible"}`}
+                      >
+                        <span className="text-lg leading-none text-[#f7f1e3]">
+                          {day.date.getDate().toString().padStart(2, "0")}
+                        </span>
+                        <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${statusBadgeClasses(day.status)}`}>
+                          {day.status === "disponible"
+                            ? `${day.availableSlots.length} cupos`
+                            : day.status === "feriado"
+                              ? "Feriado"
+                              : "Ocupado"}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="rounded-2xl border border-[#d4af37]/30 bg-[#0b0b0b]/80 p-5">
@@ -296,9 +392,10 @@ export default function ReservarPage() {
           <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/70 p-4 text-xs text-[#d8d0c0]">
             <p className="font-semibold text-[#f7f1e3]">Correos automáticos</p>
             <p className="mt-2 leading-relaxed">
-              Este flujo está listo para conectar con tu proveedor SMTP o API de correo. Al confirmar, enviaremos un correo al
-              barbero con los detalles y otro al cliente con la confirmación y la cita. Configura tus credenciales en el
-              endpoint <code className="rounded bg-[#0f0f0f] px-1 py-0.5 text-[#d4af37]">/api/reservas</code>.
+              Recomiendo usar la API gratuita de Resend (3k emails/mes) para enviar confirmaciones sin login. Al confirmar,
+              saldrá un correo al barbero y otro al cliente. Configura tus credenciales en el endpoint
+              <code className="rounded bg-[#0f0f0f] px-1 py-0.5 text-[#d4af37]">/api/reservas</code> y sigue el paso a paso en
+              <code className="rounded bg-[#0f0f0f] px-1 py-0.5 text-[#d4af37]">docs/email-setup.md</code>.
             </p>
           </div>
 
