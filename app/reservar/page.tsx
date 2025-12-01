@@ -349,12 +349,14 @@ export default function ReservarPage() {
                           } ${disabled ? "opacity-70" : "hover:scale-[1.005]"}`}
                           aria-label={`Día ${day.label} ${day.status === "disponible" ? "disponible" : "no disponible"}`}
                         >
-                          <span className="text-[11px] leading-none text-[#f7f1e3]">
+                          <span className="text-[10px] leading-none text-[#f7f1e3]">
                             {day.date.getDate().toString().padStart(2, "0")}
                           </span>
-                          <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${statusBadgeClasses(day.status)}`}>
+                          <span
+                            className={`rounded-full px-1 py-0.5 text-[8px] font-semibold leading-tight ${statusBadgeClasses(day.status)}`}
+                          >
                             {day.status === "disponible"
-                              ? `${day.availableSlots.length} cupos`
+                              ? day.availableSlots.length
                               : day.status === "feriado"
                                 ? "Feriado"
                                 : "Ocupado"}
