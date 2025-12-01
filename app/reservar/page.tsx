@@ -84,38 +84,27 @@ const services = [
 
 const weekDayLabels = ["D", "L", "M", "X", "J", "V", "S"];
 
-const gridDays = 42;
+function buildDayAvailability(date: Date, holidaySet: Set<string>): DayAvailability {
+  const key = date.toISOString().split("T")[0];
+  const dayOfWeek = date.getDay();
+  const isSunday = dayOfWeek === 0;
+  const isHoliday = holidaySet.has(key);
+  const blockedDay = isSunday || isHoliday;
 
-function buildAvailability(startDate: Date, holidaySet: Set<string>): DayAvailability[] {
-  const start = new Date(startDate);
-  start.setHours(0, 0, 0, 0);
+  const existing = bookedSlots[key] ?? [];
+  const availableSlots = blockedDay ? [] : workingHours.filter((slot) => !existing.includes(slot));
 
-  return Array.from({ length: gridDays }, (_, idx) => {
-    const date = new Date(start);
-    date.setDate(start.getDate() + idx);
-    const key = date.toISOString().split("T")[0];
+  let status: AvailabilityStatus = "disponible";
+  if (blockedDay) status = "feriado";
+  else if (availableSlots.length === 0) status = "sin-cupos";
 
-    const dayOfWeek = date.getDay();
-    const isSunday = dayOfWeek === 0;
-    const isHoliday = holidaySet.has(key);
-    const blockedDay = isSunday || isHoliday;
-
-    const existing = bookedSlots[key] ?? [];
-    const availableSlots = blockedDay
-      ? []
-      : workingHours.filter((slot) => !existing.includes(slot));
-
-    let status: AvailabilityStatus = "disponible";
-    if (blockedDay) status = "feriado";
-    else if (availableSlots.length === 0) status = "sin-cupos";
-
-    const label = date.toLocaleDateString("es-ES", {
-      day: "2-digit",
-      month: "short",
-    });
-
-    return { date, key, label, status, availableSlots };
-  });
+  return {
+    date,
+    key,
+    label: date.toLocaleDateString("es-ES", { day: "2-digit", month: "short" }),
+    status,
+    availableSlots,
+  };
 }
 
 function statusBadgeClasses(status: AvailabilityStatus) {
@@ -136,55 +125,38 @@ export default function ReservarPage() {
     return new Date(now.getFullYear(), now.getMonth(), 1);
   });
 
-  const startOfCalendar = useMemo(() => {
-    const start = new Date(currentMonth);
-    const day = start.getDay();
-    start.setDate(start.getDate() - day);
-    start.setHours(0, 0, 0, 0);
-    return start;
-  }, [currentMonth]);
+  const holidaySet = useMemo(() => buildHolidaySet(currentMonth, 400), [currentMonth]);
 
-  const holidaySet = useMemo(() => buildHolidaySet(startOfCalendar, 730), [startOfCalendar]);
+  const monthCells = useMemo(() => {
+    const year = currentMonth.getFullYear();
+    const month = currentMonth.getMonth();
+    const startDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const totalCells = Math.ceil((startDay + daysInMonth) / 7) * 7;
 
-  const availability = useMemo(() => buildAvailability(startOfCalendar, holidaySet), [holidaySet, startOfCalendar]);
-  const availabilityMap = useMemo(() => {
-    const map = new Map<string, DayAvailability>();
-    availability.forEach((day) => map.set(day.key, day));
-    return map;
-  }, [availability]);
+    const cells: Array<DayAvailability | null> = Array.from({ length: totalCells }, () => null);
 
-  const monthDays = useMemo(() => {
-    return Array.from({ length: gridDays }, (_, idx) => {
-      const date = new Date(startOfCalendar);
-      date.setDate(startOfCalendar.getDate() + idx);
-      const key = date.toISOString().split("T")[0];
-      const existing = availabilityMap.get(key);
+    for (let day = 1; day <= daysInMonth; day += 1) {
+      const date = new Date(year, month, day);
+      cells[startDay + day - 1] = buildDayAvailability(date, holidaySet);
+    }
 
-      if (existing) return existing;
-
-      const isSunday = date.getDay() === 0;
-      const isHoliday = holidaySet.has(key);
-      return {
-        date,
-        key,
-        label: date.toLocaleDateString("es-ES", { day: "2-digit", month: "short" }),
-        status: isSunday || isHoliday ? "feriado" : "sin-cupos",
-        availableSlots: [],
-      } satisfies DayAvailability;
-    });
-  }, [availabilityMap, holidaySet, startOfCalendar]);
+    return cells;
+  }, [currentMonth, holidaySet]);
 
   const weeks = useMemo(() => {
-    const chunks: DayAvailability[][] = [];
-    for (let i = 0; i < monthDays.length; i += 7) {
-      chunks.push(monthDays.slice(i, i + 7));
+    const chunks: Array<Array<DayAvailability | null>> = [];
+    for (let i = 0; i < monthCells.length; i += 7) {
+      chunks.push(monthCells.slice(i, i + 7));
     }
     return chunks;
-  }, [monthDays]);
+  }, [monthCells]);
 
-  const [selectedDateKey, setSelectedDateKey] = useState<string | undefined>(
-    monthDays.find((day) => day.status === "disponible")?.key ?? monthDays[0]?.key,
-  );
+  const [selectedDateKey, setSelectedDateKey] = useState<string | undefined>(() => {
+    const firstAvailable = monthCells.find((day) => day && day.status === "disponible") as DayAvailability | undefined;
+    const firstDay = monthCells.find((day): day is DayAvailability => Boolean(day));
+    return firstAvailable?.key ?? firstDay?.key;
+  });
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [service, setService] = useState(services[0]);
   const [name, setName] = useState("");
@@ -195,14 +167,16 @@ export default function ReservarPage() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!selectedDateKey || !monthDays.some((day) => day.key === selectedDateKey)) {
-      setSelectedDateKey(monthDays.find((day) => day.status === "disponible")?.key ?? monthDays[0]?.key);
+    const flatDays = monthCells.filter((day): day is DayAvailability => Boolean(day));
+    if (!selectedDateKey || !flatDays.some((day) => day.key === selectedDateKey)) {
+      const fallback = flatDays.find((day) => day.status === "disponible") ?? flatDays[0];
+      setSelectedDateKey(fallback?.key);
       setSelectedSlot(null);
     }
-  }, [monthDays, selectedDateKey]);
+  }, [monthCells, selectedDateKey]);
 
   const selectedDay = selectedDateKey
-    ? availabilityMap.get(selectedDateKey) ?? monthDays.find((day) => day.key === selectedDateKey)
+    ? (monthCells.find((day) => day?.key === selectedDateKey) as DayAvailability | undefined)
     : undefined;
 
   const isSubmitDisabled =
@@ -240,7 +214,8 @@ export default function ReservarPage() {
       setStatusMessage(result.message ?? "Reserva registrada. Enviaremos la confirmación por correo.");
       setStatusType("success");
       setSelectedSlot(null);
-      setSelectedDateKey(monthDays.find((day) => day.status === "disponible")?.key ?? selectedDateKey);
+      const flatDays = monthCells.filter((day): day is DayAvailability => Boolean(day));
+      setSelectedDateKey(flatDays.find((day) => day.status === "disponible")?.key ?? selectedDateKey);
     } catch {
       setStatusMessage("Hubo un problema al enviar la reserva. Intenta nuevamente.");
       setStatusType("error");
@@ -254,16 +229,18 @@ export default function ReservarPage() {
       eyebrow="Reserva principal"
       title="Agenda profesional con disponibilidad en vivo"
       description="Agenda premium sin login, enfocada en disponibilidad real y confirmación inmediata."
-      className="pb-14"
+      className="pt-10 pb-12 sm:pt-12 sm:pb-14 lg:pb-16"
       headerClassName="items-center text-center lg:w-full"
-      headerWidthClassName="lg:w-full"
+      headerWidthClassName="w-full"
+      titleClassName="mx-auto max-w-5xl text-balance text-3xl sm:text-4xl lg:text-4xl lg:leading-tight"
+      descriptionClassName="mx-auto max-w-3xl text-sm sm:text-base"
     >
-      <div className="mx-auto grid w-full max-w-6xl items-start gap-5 lg:grid-cols-2">
-        <div className="glass-panel panel-hover flex min-w-0 flex-col gap-6 rounded-2xl p-5 sm:p-6 lg:p-7">
+      <div className="mx-auto grid w-full max-w-6xl items-start gap-4 sm:gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="glass-panel panel-hover flex min-w-0 flex-col gap-5 rounded-2xl p-4 sm:p-5 lg:p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="small-caps text-xs text-[#d4af37]">Disponibilidad</p>
-              <h3 className="section-title text-2xl font-semibold text-[#f7f1e3]">Selecciona la fecha y el horario</h3>
+              <h3 className="section-title text-xl font-semibold text-[#f7f1e3] sm:text-2xl">Selecciona la fecha y el horario</h3>
             </div>
             <span className="rounded-full bg-[#0f0b0b] px-4 py-2 text-xs font-semibold text-[#d4af37] ring-1 ring-[#d4af37]/30">
               Lun a Sáb · 09:00 - 18:00
@@ -289,7 +266,7 @@ export default function ReservarPage() {
             <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-[#d4af37]">Calendario</p>
-                <p className="text-sm text-[#d8d0c0]">5 semanas visibles · elige el día y horario.</p>
+                <p className="text-sm text-[#d8d0c0]">Selecciona directamente el día disponible.</p>
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -334,13 +311,17 @@ export default function ReservarPage() {
               ))}
             </div>
 
-            <div className="grid grid-cols-7 gap-1.5 overflow-hidden sm:gap-2">
+            <div className="grid grid-cols-7 gap-1 overflow-hidden sm:gap-1.5">
               {weeks.map((week, idx) => (
                 <div key={idx} className="contents">
-                  {week.map((day) => {
+                  {week.map((day, dayIdx) => {
+                    if (!day) {
+                      return <div key={`empty-${idx}-${dayIdx}`} className="aspect-[6/7] rounded-xl" aria-hidden />;
+                    }
+
                     const isActive = day.key === selectedDateKey;
                     const disabled = day.status !== "disponible";
-                    const isCurrentMonth = day.date.getMonth() === currentMonth.getMonth();
+
                     return (
                       <button
                         key={day.key}
@@ -350,18 +331,16 @@ export default function ReservarPage() {
                           setSelectedSlot(null);
                         }}
                         disabled={disabled}
-                        className={`group flex aspect-[5/6] min-h-[52px] w-full flex-col items-center justify-center gap-1 rounded-xl px-1.5 py-1.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
+                        className={`group flex aspect-[6/7] min-h-[46px] w-full flex-col items-center justify-center gap-1 rounded-xl px-1.5 py-1.5 text-center text-[10px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
                           statusColor(day.status)
                         } ${
                           isActive
                             ? "shadow-[0_0_0_1px_rgba(212,175,55,0.6),0_10px_30px_rgba(0,0,0,0.35)]"
-                            : "shadow-[0_10px_30px_rgba(0,0,0,0.25)]"
-                        } ${disabled ? "opacity-70" : "hover:scale-[1.02]"} ${
-                          isCurrentMonth ? "" : "opacity-60"
-                        }`}
+                            : "shadow-[0_8px_22px_rgba(0,0,0,0.25)]"
+                        } ${disabled ? "opacity-70" : "hover:scale-[1.015]"}`}
                         aria-label={`Día ${day.label} ${day.status === "disponible" ? "disponible" : "no disponible"}`}
                       >
-                        <span className="text-base leading-none text-[#f7f1e3]">
+                        <span className="text-sm leading-none text-[#f7f1e3]">
                           {day.date.getDate().toString().padStart(2, "0")}
                         </span>
                         <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${statusBadgeClasses(day.status)}`}>
@@ -415,7 +394,7 @@ export default function ReservarPage() {
 
         <form
           onSubmit={handleSubmit}
-          className="glass-panel panel-hover flex min-w-0 flex-col gap-5 rounded-2xl p-5 sm:p-6 lg:p-7"
+          className="glass-panel panel-hover flex min-w-0 w-full flex-col gap-5 rounded-2xl p-4 sm:p-5 lg:p-6"
         >
           <div className="text-center">
             <p className="small-caps text-xs text-[#d4af37]">Confirmación</p>

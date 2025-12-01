@@ -8,6 +8,8 @@ type SectionShellProps = PropsWithChildren<{
   className?: string;
   headerClassName?: string;
   headerWidthClassName?: string;
+  titleClassName?: string;
+  descriptionClassName?: string;
 }>;
 
 export function SectionShell({
@@ -18,6 +20,8 @@ export function SectionShell({
   className = "",
   headerClassName = "",
   headerWidthClassName = "lg:w-3/5",
+  titleClassName = "",
+  descriptionClassName = "",
   children,
 }: SectionShellProps) {
   return (
@@ -30,10 +34,14 @@ export function SectionShell({
               {eyebrow}
             </span>
           )}
-          <h2 className="section-title text-3xl font-semibold text-[#f7f1e3] sm:text-4xl lg:text-5xl">
+          <h2
+            className={`section-title text-3xl font-semibold text-[#f7f1e3] sm:text-4xl lg:text-5xl ${titleClassName}`}
+          >
             {title}
           </h2>
-          {description && <p className="text-base leading-relaxed text-[#d8d0c0]">{description}</p>}
+          {description && (
+            <p className={`text-base leading-relaxed text-[#d8d0c0] ${descriptionClassName}`}>{description}</p>
+          )}
         </div>
         {children}
       </div>
