@@ -14,17 +14,27 @@ type GalleryItem = {
   tag: string;
 };
 
-<<<<<<< HEAD
-const galleryItems: GalleryItem[] = Array.from({ length: 18 }, (_, index) => {
-=======
 const galleryItems: GalleryItem[] = Array.from({ length: 14 }, (_, index) => {
->>>>>>> codex/create-initial-website-structure-with-next.js-3dr8zd
   const number = index + 1;
+
+  // En tu /public/catalog las 1,2,13,14 están como .JPG, el resto como .jpg
+  const ext = [1, 2, 13, 14].includes(number) ? "JPG" : "jpg";
+
   return {
     id: `pic-${number}`,
-    src: `/catalog/pic-${number}.jpg`,
-    look: number % 3 === 0 ? "Fade + Beard" : number % 2 === 0 ? "Classic Cut" : "Full Service",
-    tag: number % 3 === 0 ? "Detalles" : number % 2 === 0 ? "Texturas" : "Degradados",
+    src: `/catalog/pic-${number}.${ext}`,
+    look:
+      number % 3 === 0
+        ? "Fade + Beard"
+        : number % 2 === 0
+        ? "Classic Cut"
+        : "Full Service",
+    tag:
+      number % 3 === 0
+        ? "Detalles"
+        : number % 2 === 0
+        ? "Texturas"
+        : "Degradados",
   };
 });
 
@@ -45,29 +55,31 @@ function GalleryCard({ item }: { item: GalleryItem }) {
       tabIndex={0}
     >
       <div className="relative aspect-[4/5] w-full overflow-hidden">
-        <Image
-          src={item.src}
-          alt={`Trabajo realizado: ${item.look}`}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition duration-500 ease-out group-hover:scale-105"
-          onError={(event) => {
-            const target = event.target as HTMLImageElement;
-            target.style.display = "none";
-            setHasError(true);
-          }}
-          priority={item.id === "pic-1"}
-        />
-        {hasError ? (
+        {!hasError && (
+          <Image
+            src={item.src}
+            alt={`Trabajo realizado: ${item.look}`}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition duration-500 ease-out group-hover:scale-105"
+            onError={() => setHasError(true)}
+            priority={item.id === "pic-1"}
+          />
+        )}
+
+        {hasError && (
           <div
             className="absolute inset-0"
             style={{ backgroundImage: fallbackBackground }}
             aria-hidden
           />
-        ) : null}
+        )}
+
         <div className="absolute inset-x-3 bottom-3 z-10 flex items-center justify-between gap-3 rounded-xl border border-[#d4af37]/30 bg-black/75 px-4 py-3 text-[#f7f1e3] backdrop-blur">
           <div className="space-y-1">
-            <p className="text-[11px] uppercase tracking-[0.24em] text-[#d4af37]">{item.tag}</p>
+            <p className="text-[11px] uppercase tracking-[0.24em] text-[#d4af37]">
+              {item.tag}
+            </p>
             <h3 className="text-lg font-semibold leading-tight">{item.look}</h3>
           </div>
           <Link
@@ -93,7 +105,8 @@ export default function CatalogoPage() {
     >
       <div className="mb-6 flex flex-col gap-3 rounded-xl border border-[#d4af37]/20 bg-black/70 p-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-[#d8d0c0]">
-          Galería curada con los últimos 18 servicios. Toca una imagen en móvil para verla a detalle.
+          Galería curada con los últimos 14 servicios. Toca una imagen en móvil
+          para verla a detalle.
         </p>
         <CTAButton href="/reservar" className="w-full justify-center sm:w-auto">
           Reserva tu estilo
@@ -108,9 +121,12 @@ export default function CatalogoPage() {
 
       <div className="mt-10 flex flex-col gap-3 rounded-2xl border border-[#d4af37]/15 bg-gradient-to-r from-black/80 via-[#1a0d12]/70 to-[#0a0a0a]/80 p-6 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.24em] text-[#d4af37]">Experiencia premium</p>
+          <p className="text-xs uppercase tracking-[0.24em] text-[#d4af37]">
+            Experiencia premium
+          </p>
           <p className="text-base text-[#f7f1e3]">
-            ¿Te gustó alguno de estos acabados? Agenda tu hora y replicamos el look con detalles personalizados.
+            ¿Te gustó alguno de estos acabados? Agenda tu hora y replicamos el
+            look con detalles personalizados.
           </p>
         </div>
         <Link
