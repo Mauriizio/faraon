@@ -229,44 +229,44 @@ export default function ReservarPage() {
       eyebrow="Reserva principal"
       title="Agenda profesional con disponibilidad en vivo"
       description="Agenda premium sin login, enfocada en disponibilidad real y confirmación inmediata."
-      className="pt-10 pb-12 sm:pt-12 sm:pb-14 lg:pb-16"
+      className="pt-6 pb-10 sm:pt-8 sm:pb-12 lg:pb-12"
       headerClassName="items-center text-center lg:w-full"
       headerWidthClassName="w-full"
-      titleClassName="mx-auto max-w-5xl text-balance text-3xl sm:text-4xl lg:text-4xl lg:leading-tight"
-      descriptionClassName="mx-auto max-w-3xl text-sm sm:text-base"
+      titleClassName="mx-auto max-w-5xl text-pretty text-2xl sm:text-3xl lg:text-4xl lg:leading-tight"
+      descriptionClassName="mx-auto max-w-3xl text-xs sm:text-sm"
     >
-      <div className="mx-auto grid w-full max-w-6xl items-start gap-4 sm:gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="glass-panel panel-hover flex min-w-0 flex-col gap-5 rounded-2xl p-4 sm:p-5 lg:p-6">
+      <div className="mx-auto grid w-full max-w-6xl items-start gap-3 sm:gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="glass-panel panel-hover flex min-w-0 flex-col gap-4 rounded-2xl p-3 sm:p-4 lg:p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="small-caps text-xs text-[#d4af37]">Disponibilidad</p>
-              <h3 className="section-title text-xl font-semibold text-[#f7f1e3] sm:text-2xl">Selecciona la fecha y el horario</h3>
+              <p className="small-caps text-[11px] text-[#d4af37]">Disponibilidad</p>
+              <h3 className="section-title text-lg font-semibold text-[#f7f1e3] sm:text-xl">Selecciona la fecha y el horario</h3>
             </div>
-            <span className="rounded-full bg-[#0f0b0b] px-4 py-2 text-xs font-semibold text-[#d4af37] ring-1 ring-[#d4af37]/30">
+            <span className="rounded-full bg-[#0f0b0b] px-3 py-1.5 text-[11px] font-semibold text-[#d4af37] ring-1 ring-[#d4af37]/30">
               Lun a Sáb · 09:00 - 18:00
             </span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 text-xs text-[#d8d0c0]">
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-3 py-1 ring-1 ring-[#d4af37]/20">
-              <span className="h-3 w-3 rounded-full bg-emerald-400/80 ring-2 ring-emerald-500/40" />
+          <div className="flex flex-wrap items-center gap-2 text-[11px] text-[#d8d0c0]">
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-2.5 py-1 ring-1 ring-[#d4af37]/20">
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80 ring-2 ring-emerald-500/40" />
               Disponible
             </span>
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-3 py-1 ring-1 ring-[#d4af37]/20">
-              <span className="h-3 w-3 rounded-full bg-amber-400/80 ring-2 ring-amber-500/40" />
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-2.5 py-1 ring-1 ring-[#d4af37]/20">
+              <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80 ring-2 ring-amber-500/40" />
               Sin cupos / bloqueado
             </span>
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-3 py-1 ring-1 ring-[#d4af37]/20">
-              <span className="h-3 w-3 rounded-full bg-rose-600 ring-2 ring-rose-700/70" />
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-2.5 py-1 ring-1 ring-[#d4af37]/20">
+              <span className="h-2.5 w-2.5 rounded-full bg-rose-600 ring-2 ring-rose-700/70" />
               Feriado / domingo (rojo)
             </span>
           </div>
 
-          <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-4 sm:p-5">
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+          <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-3 sm:p-4">
+            <div className="mb-2.5 flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-[#d4af37]">Calendario</p>
-                <p className="text-sm text-[#d8d0c0]">Selecciona directamente el día disponible.</p>
+                <p className="text-xs text-[#d8d0c0]">Selecciona directamente el día disponible.</p>
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -278,12 +278,12 @@ export default function ReservarPage() {
                     setSelectedSlot(null);
                     setSelectedDateKey(undefined);
                   }}
-                  className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-3 py-1.5 text-xs font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60"
+                  className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-2.5 py-1 text-[11px] font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60"
                   aria-label="Mes anterior"
                 >
                   ←
                 </button>
-                <span className="rounded-full bg-[#0f0b0b] px-3 py-1 text-xs font-semibold text-[#f7f1e3] ring-1 ring-[#d4af37]/30">
+                <span className="rounded-full bg-[#0f0b0b] px-3 py-1 text-[11px] font-semibold text-[#f7f1e3] ring-1 ring-[#d4af37]/30">
                   {currentMonth.toLocaleDateString("es-ES", { month: "long", year: "numeric" })}
                 </span>
                 <button
@@ -295,7 +295,7 @@ export default function ReservarPage() {
                     setSelectedSlot(null);
                     setSelectedDateKey(undefined);
                   }}
-                  className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-3 py-1.5 text-xs font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60"
+                  className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-2.5 py-1 text-[11px] font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60"
                   aria-label="Mes siguiente"
                 >
                   →
@@ -303,7 +303,7 @@ export default function ReservarPage() {
               </div>
             </div>
 
-            <div className="mb-2 grid grid-cols-7 text-center text-[11px] font-semibold uppercase tracking-wide text-[#d8d0c0]">
+            <div className="mb-2 grid grid-cols-7 text-center text-[10px] font-semibold uppercase tracking-wide text-[#d8d0c0]">
               {weekDayLabels.map((label) => (
                 <span key={label} className="py-1">
                   {label}
@@ -311,12 +311,12 @@ export default function ReservarPage() {
               ))}
             </div>
 
-            <div className="grid grid-cols-7 gap-1 overflow-hidden sm:gap-1.5">
+            <div className="grid grid-cols-7 gap-1 overflow-hidden sm:gap-1">
               {weeks.map((week, idx) => (
                 <div key={idx} className="contents">
                   {week.map((day, dayIdx) => {
                     if (!day) {
-                      return <div key={`empty-${idx}-${dayIdx}`} className="aspect-[6/7] rounded-xl" aria-hidden />;
+                      return <div key={`empty-${idx}-${dayIdx}`} className="aspect-square rounded-lg" aria-hidden />;
                     }
 
                     const isActive = day.key === selectedDateKey;
@@ -331,19 +331,19 @@ export default function ReservarPage() {
                           setSelectedSlot(null);
                         }}
                         disabled={disabled}
-                        className={`group flex aspect-[6/7] min-h-[46px] w-full flex-col items-center justify-center gap-1 rounded-xl px-1.5 py-1.5 text-center text-[10px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
+                        className={`group flex aspect-square min-h-[38px] w-full flex-col items-center justify-center gap-1 rounded-lg px-1 py-1 text-center text-[10px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
                           statusColor(day.status)
                         } ${
                           isActive
-                            ? "shadow-[0_0_0_1px_rgba(212,175,55,0.6),0_10px_30px_rgba(0,0,0,0.35)]"
-                            : "shadow-[0_8px_22px_rgba(0,0,0,0.25)]"
-                        } ${disabled ? "opacity-70" : "hover:scale-[1.015]"}`}
+                            ? "shadow-[0_0_0_1px_rgba(212,175,55,0.6),0_8px_22px_rgba(0,0,0,0.28)]"
+                            : "shadow-[0_6px_18px_rgba(0,0,0,0.22)]"
+                        } ${disabled ? "opacity-70" : "hover:scale-[1.01]"}`}
                         aria-label={`Día ${day.label} ${day.status === "disponible" ? "disponible" : "no disponible"}`}
                       >
-                        <span className="text-sm leading-none text-[#f7f1e3]">
+                        <span className="text-xs leading-none text-[#f7f1e3]">
                           {day.date.getDate().toString().padStart(2, "0")}
                         </span>
-                        <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${statusBadgeClasses(day.status)}`}>
+                        <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${statusBadgeClasses(day.status)}`}>
                           {day.status === "disponible"
                             ? `${day.availableSlots.length} cupos`
                             : day.status === "feriado"
@@ -367,7 +367,7 @@ export default function ReservarPage() {
                 </span>
               )}
             </div>
-            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
               {selectedDay?.availableSlots.length ? (
                 selectedDay.availableSlots.map((slot) => {
                   const isActive = slot === selectedSlot;
@@ -375,7 +375,7 @@ export default function ReservarPage() {
                     <button
                       key={slot}
                       onClick={() => setSelectedSlot(slot)}
-                      className={`rounded-xl px-3 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
+                      className={`rounded-lg px-2.5 py-2.5 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
                         isActive
                           ? "border border-[#d4af37] bg-[#0f0b0b] text-[#f7f1e3] shadow-[0_0_0_1px_rgba(212,175,55,0.35)]"
                           : "border border-[#d4af37]/20 bg-[#0a0a0a] text-[#f7f1e3] hover:border-[#d4af37]/60"
@@ -394,14 +394,14 @@ export default function ReservarPage() {
 
         <form
           onSubmit={handleSubmit}
-          className="glass-panel panel-hover flex min-w-0 w-full flex-col gap-5 rounded-2xl p-4 sm:p-5 lg:p-6"
+          className="glass-panel panel-hover w-full max-w-3xl min-w-0 mx-auto flex flex-col gap-4 rounded-2xl p-3 sm:p-4 lg:p-5"
         >
           <div className="text-center">
-            <p className="small-caps text-xs text-[#d4af37]">Confirmación</p>
-            <h3 className="section-title mt-1 text-2xl font-semibold text-[#f7f1e3]">Datos para agendar y notificar</h3>
+            <p className="small-caps text-[11px] text-[#d4af37]">Confirmación</p>
+            <h3 className="section-title mt-1 text-xl font-semibold text-[#f7f1e3]">Datos para agendar y notificar</h3>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2">
             <label className="flex flex-col gap-2 text-sm text-[#d8d0c0]">
               Nombre completo
               <input
@@ -450,10 +450,10 @@ export default function ReservarPage() {
             </label>
           </div>
 
-          <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/70 p-4 text-xs text-[#d8d0c0]">
+          <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/70 p-3 text-xs text-[#d8d0c0]">
             <p className="font-semibold text-[#f7f1e3]">Correos automáticos</p>
             <p className="mt-2 leading-relaxed">
-              Usa la API gratuita de Resend (3k emails/mes) para confirmar citas al barbero y cliente. Configura tus credenciales en
+              Usa la API gratuita de Resend (3k emails/mes) para confirmar citas. Configura tus credenciales en
               <code className="rounded bg-[#0f0f0f] px-1 py-0.5 text-[#d4af37]">/api/reservas</code> y sigue los pasos en
               <code className="rounded bg-[#0f0f0f] px-1 py-0.5 text-[#d4af37]">docs/email-setup.md</code>.
             </p>
