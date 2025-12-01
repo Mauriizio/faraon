@@ -234,44 +234,44 @@ export default function ReservarPage() {
       eyebrow="Reserva principal"
       title="Agenda profesional con disponibilidad en vivo"
       description="Calendario compacto con cupos reales y confirmación inmediata."
-      className="pt-4 pb-8 sm:pt-5 sm:pb-10"
+      className="pt-2 pb-6 sm:pt-3 sm:pb-8"
       headerClassName="items-center text-center lg:w-full"
       headerWidthClassName="w-full"
-      titleClassName="mx-auto max-w-5xl text-pretty text-2xl sm:text-3xl lg:text-[30px] lg:leading-tight"
+      titleClassName="mx-auto max-w-5xl text-pretty text-xl sm:text-2xl lg:text-[26px] lg:leading-tight"
       descriptionClassName="mx-auto max-w-3xl text-[12px] sm:text-sm"
     >
-      <div className="mx-auto grid w-full max-w-5xl items-start gap-3 sm:gap-4 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="glass-panel panel-hover flex min-w-0 flex-col gap-3 rounded-2xl p-3 sm:p-4 lg:p-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
+      <div className="mx-auto grid w-full max-w-5xl items-start gap-2.5 sm:gap-3.5 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="glass-panel panel-hover flex min-w-0 flex-col gap-2.5 rounded-2xl p-2.5 sm:p-3.5">
+          <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
             <div>
               <p className="small-caps text-[10px] text-[#d4af37]">Disponibilidad</p>
-              <h3 className="section-title text-base font-semibold text-[#f7f1e3] sm:text-lg">Selecciona la fecha y el horario</h3>
+              <h3 className="section-title text-sm font-semibold text-[#f7f1e3] sm:text-base">Selecciona la fecha y el horario</h3>
             </div>
             <span className="rounded-full bg-[#0f0b0b] px-3 py-1 text-[10px] font-semibold text-[#d4af37] ring-1 ring-[#d4af37]/30">
               Lun a Sáb · 09:00 - 18:00
             </span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 text-[10px] text-[#d8d0c0]">
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-2 py-1 ring-1 ring-[#d4af37]/20">
-              <span className="h-2 w-2 rounded-full bg-emerald-400/80 ring-2 ring-emerald-500/40" />
+          <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-[#d8d0c0]">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#0f0b0b] px-2 py-1 ring-1 ring-[#d4af37]/20">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400/80 ring-2 ring-emerald-500/40" />
               Disponible
             </span>
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-2 py-1 ring-1 ring-[#d4af37]/20">
-              <span className="h-2 w-2 rounded-full bg-amber-400/80 ring-2 ring-amber-500/40" />
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#0f0b0b] px-2 py-1 ring-1 ring-[#d4af37]/20">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-400/80 ring-2 ring-amber-500/40" />
               Sin cupos / bloqueado
             </span>
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-2 py-1 ring-1 ring-[#d4af37]/20">
-              <span className="h-2 w-2 rounded-full bg-rose-600 ring-2 ring-rose-700/70" />
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#0f0b0b] px-2 py-1 ring-1 ring-[#d4af37]/20">
+              <span className="h-1.5 w-1.5 rounded-full bg-rose-600 ring-2 ring-rose-700/70" />
               Feriado / domingo (rojo)
             </span>
           </div>
 
-          <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-3 sm:p-3.5 max-w-[560px] w-full mx-auto">
-            <div className="mb-2.5 flex flex-wrap items-center justify-between gap-3">
+          <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-3 sm:p-3.5 max-w-[540px] w-full mx-auto">
+            <div className="mb-2 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-[#d4af37]">Calendario</p>
-                <p className="text-xs text-[#d8d0c0]">Selecciona directamente el día disponible.</p>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-[#d4af37]">Calendario</p>
+                <p className="text-[11px] text-[#d8d0c0]">Selecciona directamente el día disponible.</p>
               </div>
             <div className="flex items-center gap-2">
                 <button
@@ -311,7 +311,7 @@ export default function ReservarPage() {
               </div>
             </div>
 
-            <div className="mb-2 grid grid-cols-7 text-center text-[10px] font-semibold uppercase tracking-wide text-[#d8d0c0]">
+            <div className="mb-1.5 grid grid-cols-7 text-center text-[10px] font-semibold uppercase tracking-wide text-[#d8d0c0]">
               {weekDayLabels.map((label) => (
                 <span key={label} className="py-1">
                   {label}
@@ -339,7 +339,7 @@ export default function ReservarPage() {
                           setSelectedSlot(null);
                         }}
                         disabled={disabled}
-                        className={`group flex aspect-square min-h-[32px] w-full flex-col items-center justify-center gap-1 rounded-lg px-1 py-1 text-center text-[10px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
+                        className={`group flex aspect-square min-h-[30px] w-full flex-col items-center justify-center gap-0.5 rounded-lg px-1 py-1 text-center text-[10px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
                           statusColor(day.status)
                         } ${
                           isActive
@@ -366,7 +366,7 @@ export default function ReservarPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-[#d4af37]/30 bg-[#0b0b0b]/80 p-4 max-w-[560px] w-full mx-auto">
+          <div className="rounded-2xl border border-[#d4af37]/30 bg-[#0b0b0b]/80 p-3 sm:p-3.5 max-w-[540px] w-full mx-auto">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <p className="text-sm font-semibold text-[#f7f1e3]">Horarios del día</p>
               {selectedDay?.status !== "disponible" && (
@@ -375,7 +375,7 @@ export default function ReservarPage() {
                 </span>
               )}
             </div>
-            <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="mt-2 grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-4">
               {selectedDay?.availableSlots.length ? (
                 selectedDay.availableSlots.map((slot) => {
                   const isActive = slot === selectedSlot;
@@ -383,7 +383,7 @@ export default function ReservarPage() {
                     <button
                       key={slot}
                       onClick={() => setSelectedSlot(slot)}
-                      className={`rounded-lg px-2.5 py-2.5 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
+                      className={`rounded-lg px-2 py-2 text-[13px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
                         isActive
                           ? "border border-[#d4af37] bg-[#0f0b0b] text-[#f7f1e3] shadow-[0_0_0_1px_rgba(212,175,55,0.35)]"
                           : "border border-[#d4af37]/20 bg-[#0a0a0a] text-[#f7f1e3] hover:border-[#d4af37]/60"
@@ -402,15 +402,15 @@ export default function ReservarPage() {
 
         <form
           onSubmit={handleSubmit}
-          className="glass-panel panel-hover mx-auto flex w-full max-w-[540px] min-w-0 flex-col gap-3 rounded-2xl p-3 sm:p-4 lg:p-4"
+          className="glass-panel panel-hover mx-auto flex w-full max-w-[520px] min-w-0 flex-col gap-2.5 rounded-2xl p-3 sm:p-3.5"
         >
           <div className="text-center">
             <p className="small-caps text-[10px] text-[#d4af37]">Confirmación</p>
-            <h3 className="section-title mt-1 text-lg font-semibold text-[#f7f1e3]">Datos para agendar y notificar</h3>
+            <h3 className="section-title mt-1 text-base font-semibold text-[#f7f1e3]">Datos para agendar y notificar</h3>
           </div>
 
-          <div className="grid gap-2.5 sm:grid-cols-2">
-            <label className="flex flex-col gap-2 text-sm text-[#d8d0c0]">
+          <div className="grid gap-2 sm:grid-cols-2">
+            <label className="flex flex-col gap-1.5 text-sm text-[#d8d0c0]">
               Nombre completo
               <input
                 value={name}
@@ -420,7 +420,7 @@ export default function ReservarPage() {
                 placeholder="Tu nombre"
               />
             </label>
-            <label className="flex flex-col gap-2 text-sm text-[#d8d0c0]">
+            <label className="flex flex-col gap-1.5 text-sm text-[#d8d0c0]">
               Correo electrónico
               <input
                 type="email"
@@ -431,7 +431,7 @@ export default function ReservarPage() {
                 placeholder="nombre@correo.com"
               />
             </label>
-            <label className="flex flex-col gap-2 text-sm text-[#d8d0c0]">
+            <label className="flex flex-col gap-1.5 text-sm text-[#d8d0c0]">
               Teléfono / WhatsApp
               <input
                 type="tel"
@@ -442,7 +442,7 @@ export default function ReservarPage() {
                 placeholder="Ej: +57 300 000 0000"
               />
             </label>
-            <label className="flex flex-col gap-2 text-sm text-[#d8d0c0]">
+            <label className="flex flex-col gap-1.5 text-sm text-[#d8d0c0]">
               Servicio deseado
               <select
                 value={service}
@@ -458,7 +458,7 @@ export default function ReservarPage() {
             </label>
           </div>
 
-          <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/70 p-3 text-xs text-[#d8d0c0]">
+          <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/70 p-2.5 text-xs text-[#d8d0c0]">
             <p className="font-semibold text-[#f7f1e3]">Correos automáticos</p>
             <p className="mt-2 leading-relaxed">
               Usa la API gratuita de Resend (3k emails/mes) para confirmar citas. Configura tus credenciales en
