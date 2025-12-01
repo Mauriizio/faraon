@@ -6,6 +6,8 @@ type SectionShellProps = PropsWithChildren<{
   title: string;
   description?: string;
   className?: string;
+  headerClassName?: string;
+  headerWidthClassName?: string;
 }>;
 
 export function SectionShell({
@@ -14,12 +16,14 @@ export function SectionShell({
   title,
   description,
   className = "",
+  headerClassName = "",
+  headerWidthClassName = "lg:w-3/5",
   children,
 }: SectionShellProps) {
   return (
     <section id={id} className={`py-14 sm:py-16 lg:py-20 ${className}`}>
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
-        <div className="fade-up space-y-3 lg:w-3/5">
+        <div className={`fade-up space-y-3 ${headerWidthClassName} ${headerClassName}`}>
           {eyebrow && (
             <span className="small-caps inline-flex items-center gap-2 text-xs text-[#d4af37]">
               <span className="h-px w-8 bg-[#d4af37]/70" aria-hidden />

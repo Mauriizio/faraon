@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CTAButton } from "../components/CTAButton";
 import { SectionShell } from "../components/SectionShell";
 
@@ -84,13 +84,13 @@ const services = [
 
 const weekDayLabels = ["D", "L", "M", "X", "J", "V", "S"];
 
-const calendarRangeDays = 35;
+const gridDays = 42;
 
 function buildAvailability(startDate: Date, holidaySet: Set<string>): DayAvailability[] {
   const start = new Date(startDate);
   start.setHours(0, 0, 0, 0);
 
-  return Array.from({ length: calendarRangeDays }, (_, idx) => {
+  return Array.from({ length: gridDays }, (_, idx) => {
     const date = new Date(start);
     date.setDate(start.getDate() + idx);
     const key = date.toISOString().split("T")[0];
@@ -131,14 +131,20 @@ function statusColor(status: AvailabilityStatus) {
 }
 
 export default function ReservarPage() {
-  const startOfCalendar = useMemo(() => {
-    const base = new Date();
-    base.setHours(0, 0, 0, 0);
-    base.setDate(base.getDate() - base.getDay());
-    return base;
-  }, []);
+  const [currentMonth, setCurrentMonth] = useState(() => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), 1);
+  });
 
-  const holidaySet = useMemo(() => buildHolidaySet(startOfCalendar, calendarRangeDays), [startOfCalendar]);
+  const startOfCalendar = useMemo(() => {
+    const start = new Date(currentMonth);
+    const day = start.getDay();
+    start.setDate(start.getDate() - day);
+    start.setHours(0, 0, 0, 0);
+    return start;
+  }, [currentMonth]);
+
+  const holidaySet = useMemo(() => buildHolidaySet(startOfCalendar, 730), [startOfCalendar]);
 
   const availability = useMemo(() => buildAvailability(startOfCalendar, holidaySet), [holidaySet, startOfCalendar]);
   const availabilityMap = useMemo(() => {
@@ -147,13 +153,8 @@ export default function ReservarPage() {
     return map;
   }, [availability]);
 
-  const defaultDateKey = useMemo(
-    () => availability.find((day) => day.status === "disponible")?.key ?? availability[0]?.key,
-    [availability],
-  );
-
-  const calendarDays = useMemo(() => {
-    return Array.from({ length: calendarRangeDays }, (_, idx) => {
+  const monthDays = useMemo(() => {
+    return Array.from({ length: gridDays }, (_, idx) => {
       const date = new Date(startOfCalendar);
       date.setDate(startOfCalendar.getDate() + idx);
       const key = date.toISOString().split("T")[0];
@@ -175,13 +176,15 @@ export default function ReservarPage() {
 
   const weeks = useMemo(() => {
     const chunks: DayAvailability[][] = [];
-    for (let i = 0; i < calendarDays.length; i += 7) {
-      chunks.push(calendarDays.slice(i, i + 7));
+    for (let i = 0; i < monthDays.length; i += 7) {
+      chunks.push(monthDays.slice(i, i + 7));
     }
     return chunks;
-  }, [calendarDays]);
+  }, [monthDays]);
 
-  const [selectedDateKey, setSelectedDateKey] = useState<string | undefined>(defaultDateKey);
+  const [selectedDateKey, setSelectedDateKey] = useState<string | undefined>(
+    monthDays.find((day) => day.status === "disponible")?.key ?? monthDays[0]?.key,
+  );
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [service, setService] = useState(services[0]);
   const [name, setName] = useState("");
@@ -191,8 +194,15 @@ export default function ReservarPage() {
   const [statusType, setStatusType] = useState<"success" | "error" | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
+  useEffect(() => {
+    if (!selectedDateKey || !monthDays.some((day) => day.key === selectedDateKey)) {
+      setSelectedDateKey(monthDays.find((day) => day.status === "disponible")?.key ?? monthDays[0]?.key);
+      setSelectedSlot(null);
+    }
+  }, [monthDays, selectedDateKey]);
+
   const selectedDay = selectedDateKey
-    ? availabilityMap.get(selectedDateKey) ?? calendarDays.find((day) => day.key === selectedDateKey)
+    ? availabilityMap.get(selectedDateKey) ?? monthDays.find((day) => day.key === selectedDateKey)
     : undefined;
 
   const isSubmitDisabled =
@@ -230,6 +240,7 @@ export default function ReservarPage() {
       setStatusMessage(result.message ?? "Reserva registrada. Enviaremos la confirmación por correo.");
       setStatusType("success");
       setSelectedSlot(null);
+      setSelectedDateKey(monthDays.find((day) => day.status === "disponible")?.key ?? selectedDateKey);
     } catch {
       setStatusMessage("Hubo un problema al enviar la reserva. Intenta nuevamente.");
       setStatusType("error");
@@ -242,17 +253,17 @@ export default function ReservarPage() {
     <SectionShell
       eyebrow="Reserva principal"
       title="Agenda profesional con disponibilidad en vivo"
-      description="Calendario móvil-first que resalta horarios disponibles en verde y bloquea feriados o cupos ocupados en rojo. Sin login, solo tus datos esenciales."
-      className="pb-24"
+      description="Agenda premium sin login, enfocada en disponibilidad real y confirmación inmediata."
+      className="pb-14"
+      headerClassName="items-center text-center lg:w-full"
+      headerWidthClassName="lg:w-full"
     >
-      <div className="mx-auto grid w-full max-w-6xl gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="glass-panel panel-hover flex flex-col gap-6 rounded-2xl p-6 sm:p-8">
+      <div className="mx-auto grid w-full max-w-6xl items-start gap-5 lg:grid-cols-2">
+        <div className="glass-panel panel-hover flex min-w-0 flex-col gap-6 rounded-2xl p-5 sm:p-6 lg:p-7">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="small-caps text-xs text-[#d4af37]">Disponibilidad</p>
-              <h3 className="section-title text-2xl font-semibold text-[#f7f1e3]">
-                Selecciona la fecha y el horario
-              </h3>
+              <h3 className="section-title text-2xl font-semibold text-[#f7f1e3]">Selecciona la fecha y el horario</h3>
             </div>
             <span className="rounded-full bg-[#0f0b0b] px-4 py-2 text-xs font-semibold text-[#d4af37] ring-1 ring-[#d4af37]/30">
               Lun a Sáb · 09:00 - 18:00
@@ -278,11 +289,41 @@ export default function ReservarPage() {
             <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-[#d4af37]">Calendario</p>
-                <p className="text-sm text-[#d8d0c0]">Vista compacta 5 semanas · toca un día para ver horarios.</p>
+                <p className="text-sm text-[#d8d0c0]">5 semanas visibles · elige el día y horario.</p>
               </div>
-              <span className="rounded-full bg-[#0f0b0b] px-3 py-1 text-xs font-semibold text-[#f7f1e3] ring-1 ring-[#d4af37]/30">
-                {selectedDay?.date.toLocaleDateString("es-ES", { month: "long", year: "numeric" })}
-              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const prev = new Date(currentMonth);
+                    prev.setMonth(prev.getMonth() - 1);
+                    setCurrentMonth(prev);
+                    setSelectedSlot(null);
+                    setSelectedDateKey(undefined);
+                  }}
+                  className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-3 py-1.5 text-xs font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60"
+                  aria-label="Mes anterior"
+                >
+                  ←
+                </button>
+                <span className="rounded-full bg-[#0f0b0b] px-3 py-1 text-xs font-semibold text-[#f7f1e3] ring-1 ring-[#d4af37]/30">
+                  {currentMonth.toLocaleDateString("es-ES", { month: "long", year: "numeric" })}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const next = new Date(currentMonth);
+                    next.setMonth(next.getMonth() + 1);
+                    setCurrentMonth(next);
+                    setSelectedSlot(null);
+                    setSelectedDateKey(undefined);
+                  }}
+                  className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-3 py-1.5 text-xs font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60"
+                  aria-label="Mes siguiente"
+                >
+                  →
+                </button>
+              </div>
             </div>
 
             <div className="mb-2 grid grid-cols-7 text-center text-[11px] font-semibold uppercase tracking-wide text-[#d8d0c0]">
@@ -299,6 +340,7 @@ export default function ReservarPage() {
                   {week.map((day) => {
                     const isActive = day.key === selectedDateKey;
                     const disabled = day.status !== "disponible";
+                    const isCurrentMonth = day.date.getMonth() === currentMonth.getMonth();
                     return (
                       <button
                         key={day.key}
@@ -308,14 +350,18 @@ export default function ReservarPage() {
                           setSelectedSlot(null);
                         }}
                         disabled={disabled}
-                        className={`group flex aspect-[6/7] min-h-[54px] w-full flex-col items-center justify-center gap-1 rounded-xl px-1.5 py-1.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
+                        className={`group flex aspect-[5/6] min-h-[52px] w-full flex-col items-center justify-center gap-1 rounded-xl px-1.5 py-1.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
                           statusColor(day.status)
-                        } ${isActive ? "shadow-[0_0_0_1px_rgba(212,175,55,0.6),0_10px_30px_rgba(0,0,0,0.35)]" : "shadow-[0_10px_30px_rgba(0,0,0,0.25)]"} ${
-                          disabled ? "opacity-70" : "hover:scale-[1.02]"
+                        } ${
+                          isActive
+                            ? "shadow-[0_0_0_1px_rgba(212,175,55,0.6),0_10px_30px_rgba(0,0,0,0.35)]"
+                            : "shadow-[0_10px_30px_rgba(0,0,0,0.25)]"
+                        } ${disabled ? "opacity-70" : "hover:scale-[1.02]"} ${
+                          isCurrentMonth ? "" : "opacity-60"
                         }`}
                         aria-label={`Día ${day.label} ${day.status === "disponible" ? "disponible" : "no disponible"}`}
                       >
-                        <span className="text-lg leading-none text-[#f7f1e3]">
+                        <span className="text-base leading-none text-[#f7f1e3]">
                           {day.date.getDate().toString().padStart(2, "0")}
                         </span>
                         <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${statusBadgeClasses(day.status)}`}>
@@ -369,14 +415,11 @@ export default function ReservarPage() {
 
         <form
           onSubmit={handleSubmit}
-          className="glass-panel panel-hover flex flex-col gap-5 rounded-2xl p-6 sm:p-8"
+          className="glass-panel panel-hover flex min-w-0 flex-col gap-5 rounded-2xl p-5 sm:p-6 lg:p-7"
         >
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <p className="small-caps text-xs text-[#d4af37]">Confirmación</p>
-              <h3 className="section-title text-2xl font-semibold text-[#f7f1e3]">Datos para agendar y notificar</h3>
-            </div>
-            <span className="rounded-full bg-[#4a1f2f]/60 px-3 py-1 text-xs font-semibold text-[#f7f1e3]">Correo al barbero y cliente</span>
+          <div className="text-center">
+            <p className="small-caps text-xs text-[#d4af37]">Confirmación</p>
+            <h3 className="section-title mt-1 text-2xl font-semibold text-[#f7f1e3]">Datos para agendar y notificar</h3>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -431,18 +474,13 @@ export default function ReservarPage() {
           <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/70 p-4 text-xs text-[#d8d0c0]">
             <p className="font-semibold text-[#f7f1e3]">Correos automáticos</p>
             <p className="mt-2 leading-relaxed">
-              Recomiendo usar la API gratuita de Resend (3k emails/mes) para enviar confirmaciones sin login. Al confirmar,
-              saldrá un correo al barbero y otro al cliente. Configura tus credenciales en el endpoint
-              <code className="rounded bg-[#0f0f0f] px-1 py-0.5 text-[#d4af37]">/api/reservas</code> y sigue el paso a paso en
+              Usa la API gratuita de Resend (3k emails/mes) para confirmar citas al barbero y cliente. Configura tus credenciales en
+              <code className="rounded bg-[#0f0f0f] px-1 py-0.5 text-[#d4af37]">/api/reservas</code> y sigue los pasos en
               <code className="rounded bg-[#0f0f0f] px-1 py-0.5 text-[#d4af37]">docs/email-setup.md</code>.
             </p>
           </div>
 
-          <CTAButton
-            type="submit"
-            className="w-full justify-center"
-            disabled={isSubmitDisabled || submitting}
-          >
+          <CTAButton type="submit" className="w-full justify-center" disabled={isSubmitDisabled || submitting}>
             {submitting ? "Agendando..." : "Agendar"}
           </CTAButton>
 
