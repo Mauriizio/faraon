@@ -84,18 +84,19 @@ const services = [
 
 const weekDayLabels = ["D", "L", "M", "X", "J", "V", "S"];
 
-function buildDayAvailability(date: Date, holidaySet: Set<string>): DayAvailability {
+function buildDayAvailability(date: Date, holidaySet: Set<string>, todayKey: string): DayAvailability {
   const key = date.toISOString().split("T")[0];
   const dayOfWeek = date.getDay();
   const isSunday = dayOfWeek === 0;
   const isHoliday = holidaySet.has(key);
-  const blockedDay = isSunday || isHoliday;
+  const isPast = key < todayKey;
+  const blockedDay = isSunday || isHoliday || isPast;
 
   const existing = bookedSlots[key] ?? [];
   const availableSlots = blockedDay ? [] : workingHours.filter((slot) => !existing.includes(slot));
 
   let status: AvailabilityStatus = "disponible";
-  if (blockedDay) status = "feriado";
+  if (blockedDay) status = isHoliday || isSunday ? "feriado" : "sin-cupos";
   else if (availableSlots.length === 0) status = "sin-cupos";
 
   return {
@@ -120,10 +121,14 @@ function statusColor(status: AvailabilityStatus) {
 }
 
 export default function ReservarPage() {
-  const [currentMonth, setCurrentMonth] = useState(() => {
+  const today = useMemo(() => {
     const now = new Date();
-    return new Date(now.getFullYear(), now.getMonth(), 1);
-  });
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  }, []);
+
+  const todayKey = useMemo(() => today.toISOString().split("T")[0], [today]);
+
+  const [currentMonth, setCurrentMonth] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1));
 
   const holidaySet = useMemo(() => buildHolidaySet(currentMonth, 400), [currentMonth]);
 
@@ -138,11 +143,11 @@ export default function ReservarPage() {
 
     for (let day = 1; day <= daysInMonth; day += 1) {
       const date = new Date(year, month, day);
-      cells[startDay + day - 1] = buildDayAvailability(date, holidaySet);
+      cells[startDay + day - 1] = buildDayAvailability(date, holidaySet, todayKey);
     }
 
     return cells;
-  }, [currentMonth, holidaySet]);
+  }, [currentMonth, holidaySet, todayKey]);
 
   const weeks = useMemo(() => {
     const chunks: Array<Array<DayAvailability | null>> = [];
@@ -228,58 +233,61 @@ export default function ReservarPage() {
     <SectionShell
       eyebrow="Reserva principal"
       title="Agenda profesional con disponibilidad en vivo"
-      description="Agenda premium sin login, enfocada en disponibilidad real y confirmación inmediata."
-      className="pt-6 pb-10 sm:pt-8 sm:pb-12 lg:pb-12"
+      description="Calendario compacto con cupos reales y confirmación inmediata."
+      className="pt-4 pb-8 sm:pt-5 sm:pb-10"
       headerClassName="items-center text-center lg:w-full"
       headerWidthClassName="w-full"
-      titleClassName="mx-auto max-w-5xl text-pretty text-2xl sm:text-3xl lg:text-4xl lg:leading-tight"
-      descriptionClassName="mx-auto max-w-3xl text-xs sm:text-sm"
+      titleClassName="mx-auto max-w-5xl text-pretty text-2xl sm:text-3xl lg:text-[30px] lg:leading-tight"
+      descriptionClassName="mx-auto max-w-3xl text-[12px] sm:text-sm"
     >
-      <div className="mx-auto grid w-full max-w-6xl items-start gap-3 sm:gap-4 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="glass-panel panel-hover flex min-w-0 flex-col gap-4 rounded-2xl p-3 sm:p-4 lg:p-5">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="mx-auto grid w-full max-w-5xl items-start gap-3 sm:gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="glass-panel panel-hover flex min-w-0 flex-col gap-3 rounded-2xl p-3 sm:p-4 lg:p-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <p className="small-caps text-[11px] text-[#d4af37]">Disponibilidad</p>
-              <h3 className="section-title text-lg font-semibold text-[#f7f1e3] sm:text-xl">Selecciona la fecha y el horario</h3>
+              <p className="small-caps text-[10px] text-[#d4af37]">Disponibilidad</p>
+              <h3 className="section-title text-base font-semibold text-[#f7f1e3] sm:text-lg">Selecciona la fecha y el horario</h3>
             </div>
-            <span className="rounded-full bg-[#0f0b0b] px-3 py-1.5 text-[11px] font-semibold text-[#d4af37] ring-1 ring-[#d4af37]/30">
+            <span className="rounded-full bg-[#0f0b0b] px-3 py-1 text-[10px] font-semibold text-[#d4af37] ring-1 ring-[#d4af37]/30">
               Lun a Sáb · 09:00 - 18:00
             </span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 text-[11px] text-[#d8d0c0]">
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-2.5 py-1 ring-1 ring-[#d4af37]/20">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80 ring-2 ring-emerald-500/40" />
+          <div className="flex flex-wrap items-center gap-2 text-[10px] text-[#d8d0c0]">
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-2 py-1 ring-1 ring-[#d4af37]/20">
+              <span className="h-2 w-2 rounded-full bg-emerald-400/80 ring-2 ring-emerald-500/40" />
               Disponible
             </span>
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-2.5 py-1 ring-1 ring-[#d4af37]/20">
-              <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80 ring-2 ring-amber-500/40" />
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-2 py-1 ring-1 ring-[#d4af37]/20">
+              <span className="h-2 w-2 rounded-full bg-amber-400/80 ring-2 ring-amber-500/40" />
               Sin cupos / bloqueado
             </span>
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-2.5 py-1 ring-1 ring-[#d4af37]/20">
-              <span className="h-2.5 w-2.5 rounded-full bg-rose-600 ring-2 ring-rose-700/70" />
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-2 py-1 ring-1 ring-[#d4af37]/20">
+              <span className="h-2 w-2 rounded-full bg-rose-600 ring-2 ring-rose-700/70" />
               Feriado / domingo (rojo)
             </span>
           </div>
 
-          <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-3 sm:p-4">
+          <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-3 sm:p-3.5 max-w-[560px] w-full mx-auto">
             <div className="mb-2.5 flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-[#d4af37]">Calendario</p>
                 <p className="text-xs text-[#d8d0c0]">Selecciona directamente el día disponible.</p>
               </div>
-              <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => {
+                    const minMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+                    if (currentMonth <= minMonth) return;
                     const prev = new Date(currentMonth);
                     prev.setMonth(prev.getMonth() - 1);
                     setCurrentMonth(prev);
                     setSelectedSlot(null);
                     setSelectedDateKey(undefined);
                   }}
-                  className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-2.5 py-1 text-[11px] font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60"
+                  className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-2.5 py-1 text-[11px] font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60 disabled:cursor-not-allowed disabled:opacity-40"
                   aria-label="Mes anterior"
+                  disabled={currentMonth <= new Date(today.getFullYear(), today.getMonth(), 1)}
                 >
                   ←
                 </button>
@@ -311,7 +319,7 @@ export default function ReservarPage() {
               ))}
             </div>
 
-            <div className="grid grid-cols-7 gap-1 overflow-hidden sm:gap-1">
+            <div className="grid grid-cols-7 gap-0.5 overflow-hidden sm:gap-1">
               {weeks.map((week, idx) => (
                 <div key={idx} className="contents">
                   {week.map((day, dayIdx) => {
@@ -331,7 +339,7 @@ export default function ReservarPage() {
                           setSelectedSlot(null);
                         }}
                         disabled={disabled}
-                        className={`group flex aspect-square min-h-[38px] w-full flex-col items-center justify-center gap-1 rounded-lg px-1 py-1 text-center text-[10px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
+                        className={`group flex aspect-square min-h-[32px] w-full flex-col items-center justify-center gap-1 rounded-lg px-1 py-1 text-center text-[10px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
                           statusColor(day.status)
                         } ${
                           isActive
@@ -358,7 +366,7 @@ export default function ReservarPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-[#d4af37]/30 bg-[#0b0b0b]/80 p-5">
+          <div className="rounded-2xl border border-[#d4af37]/30 bg-[#0b0b0b]/80 p-4 max-w-[560px] w-full mx-auto">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <p className="text-sm font-semibold text-[#f7f1e3]">Horarios del día</p>
               {selectedDay?.status !== "disponible" && (
@@ -367,7 +375,7 @@ export default function ReservarPage() {
                 </span>
               )}
             </div>
-            <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
               {selectedDay?.availableSlots.length ? (
                 selectedDay.availableSlots.map((slot) => {
                   const isActive = slot === selectedSlot;
@@ -394,14 +402,14 @@ export default function ReservarPage() {
 
         <form
           onSubmit={handleSubmit}
-          className="glass-panel panel-hover w-full max-w-3xl min-w-0 mx-auto flex flex-col gap-4 rounded-2xl p-3 sm:p-4 lg:p-5"
+          className="glass-panel panel-hover mx-auto flex w-full max-w-[540px] min-w-0 flex-col gap-3 rounded-2xl p-3 sm:p-4 lg:p-4"
         >
           <div className="text-center">
-            <p className="small-caps text-[11px] text-[#d4af37]">Confirmación</p>
-            <h3 className="section-title mt-1 text-xl font-semibold text-[#f7f1e3]">Datos para agendar y notificar</h3>
+            <p className="small-caps text-[10px] text-[#d4af37]">Confirmación</p>
+            <h3 className="section-title mt-1 text-lg font-semibold text-[#f7f1e3]">Datos para agendar y notificar</h3>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-2.5 sm:grid-cols-2">
             <label className="flex flex-col gap-2 text-sm text-[#d8d0c0]">
               Nombre completo
               <input
