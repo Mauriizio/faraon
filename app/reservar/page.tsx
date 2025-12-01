@@ -4,7 +4,11 @@ import { useEffect, useMemo, useState } from "react";
 import { CTAButton } from "../components/CTAButton";
 import { SectionShell } from "../components/SectionShell";
 
+<<<<<<< HEAD
 type AvailabilityStatus = "disponible" | "sin-cupos" | "⛔";
+=======
+type AvailabilityStatus = "disponible" | "sin-cupos" | "feriado";
+>>>>>>> origin/codex/create-initial-website-structure-with-next.js-wtr9lq
 
 type DayAvailability = {
   date: Date;
@@ -96,7 +100,11 @@ function buildDayAvailability(date: Date, holidaySet: Set<string>, todayKey: str
   const availableSlots = blockedDay ? [] : workingHours.filter((slot) => !existing.includes(slot));
 
   let status: AvailabilityStatus = "disponible";
+<<<<<<< HEAD
   if (blockedDay) status = isHoliday || isSunday ? "⛔" : "sin-cupos";
+=======
+  if (blockedDay) status = isHoliday || isSunday ? "feriado" : "sin-cupos";
+>>>>>>> origin/codex/create-initial-website-structure-with-next.js-wtr9lq
   else if (availableSlots.length === 0) status = "sin-cupos";
 
   return {
@@ -357,8 +365,13 @@ export default function ReservarPage() {
                           >
                             {day.status === "disponible"
                               ? day.availableSlots.length
+<<<<<<< HEAD
                               : day.status === "⛔"
                                 ? "⛔"
+=======
+                              : day.status === "feriado"
+                                ? "Feriado"
+>>>>>>> origin/codex/create-initial-website-structure-with-next.js-wtr9lq
                                 : "Ocupado"}
                           </span>
                         </button>
