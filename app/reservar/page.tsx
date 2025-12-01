@@ -234,18 +234,18 @@ export default function ReservarPage() {
       eyebrow="Reserva principal"
       title="Agenda profesional con disponibilidad en vivo"
       description="Calendario compacto con cupos reales y confirmación inmediata."
-      className="pt-2 pb-6 sm:pt-3 sm:pb-8"
+      className="pt-3 pb-5 sm:pt-4 sm:pb-7"
       headerClassName="items-center text-center lg:w-full"
       headerWidthClassName="w-full"
-      titleClassName="mx-auto max-w-5xl text-pretty text-xl sm:text-2xl lg:text-[26px] lg:leading-tight"
-      descriptionClassName="mx-auto max-w-3xl text-[12px] sm:text-sm"
+      titleClassName="mx-auto max-w-5xl text-pretty text-lg sm:text-xl lg:text-[22px] lg:leading-[1.2]"
+      descriptionClassName="mx-auto max-w-3xl text-[11px] sm:text-sm"
     >
-      <div className="mx-auto grid w-full max-w-5xl items-start gap-2.5 sm:gap-3.5 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="glass-panel panel-hover flex min-w-0 flex-col gap-2.5 rounded-2xl p-2.5 sm:p-3.5">
+      <div className="mx-auto grid w-full max-w-5xl items-start gap-2 sm:gap-3 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="glass-panel panel-hover flex min-w-0 flex-col gap-2 rounded-2xl p-2.5 sm:p-3">
           <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
             <div>
               <p className="small-caps text-[10px] text-[#d4af37]">Disponibilidad</p>
-              <h3 className="section-title text-sm font-semibold text-[#f7f1e3] sm:text-base">Selecciona la fecha y el horario</h3>
+              <h3 className="section-title text-xs font-semibold text-[#f7f1e3] sm:text-sm">Selecciona la fecha y el horario</h3>
             </div>
             <span className="rounded-full bg-[#0f0b0b] px-3 py-1 text-[10px] font-semibold text-[#d4af37] ring-1 ring-[#d4af37]/30">
               Lun a Sáb · 09:00 - 18:00
@@ -267,146 +267,148 @@ export default function ReservarPage() {
             </span>
           </div>
 
-          <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-3 sm:p-3.5 max-w-[540px] w-full mx-auto">
-            <div className="mb-2 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-[#d4af37]">Calendario</p>
-                <p className="text-[11px] text-[#d8d0c0]">Selecciona directamente el día disponible.</p>
+          <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-[1fr_0.9fr] sm:items-start">
+            <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-2.5 sm:p-3 max-w-[520px] w-full mx-auto">
+              <div className="mb-2 flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-[#d4af37]">Calendario</p>
+                  <p className="text-[10px] text-[#d8d0c0]">Selecciona directamente el día disponible.</p>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const minMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+                      if (currentMonth <= minMonth) return;
+                      const prev = new Date(currentMonth);
+                      prev.setMonth(prev.getMonth() - 1);
+                      setCurrentMonth(prev);
+                      setSelectedSlot(null);
+                      setSelectedDateKey(undefined);
+                    }}
+                    className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-2 py-1 text-[11px] font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60 disabled:cursor-not-allowed disabled:opacity-40"
+                    aria-label="Mes anterior"
+                    disabled={currentMonth <= new Date(today.getFullYear(), today.getMonth(), 1)}
+                  >
+                    ←
+                  </button>
+                  <span className="rounded-full bg-[#0f0b0b] px-3 py-1 text-[11px] font-semibold text-[#f7f1e3] ring-1 ring-[#d4af37]/30">
+                    {currentMonth.toLocaleDateString("es-ES", { month: "long", year: "numeric" })}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const next = new Date(currentMonth);
+                      next.setMonth(next.getMonth() + 1);
+                      setCurrentMonth(next);
+                      setSelectedSlot(null);
+                      setSelectedDateKey(undefined);
+                    }}
+                    className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-2 py-1 text-[11px] font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60"
+                    aria-label="Mes siguiente"
+                  >
+                    →
+                  </button>
+                </div>
               </div>
-            <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    const minMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-                    if (currentMonth <= minMonth) return;
-                    const prev = new Date(currentMonth);
-                    prev.setMonth(prev.getMonth() - 1);
-                    setCurrentMonth(prev);
-                    setSelectedSlot(null);
-                    setSelectedDateKey(undefined);
-                  }}
-                  className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-2.5 py-1 text-[11px] font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60 disabled:cursor-not-allowed disabled:opacity-40"
-                  aria-label="Mes anterior"
-                  disabled={currentMonth <= new Date(today.getFullYear(), today.getMonth(), 1)}
-                >
-                  ←
-                </button>
-                <span className="rounded-full bg-[#0f0b0b] px-3 py-1 text-[11px] font-semibold text-[#f7f1e3] ring-1 ring-[#d4af37]/30">
-                  {currentMonth.toLocaleDateString("es-ES", { month: "long", year: "numeric" })}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => {
-                    const next = new Date(currentMonth);
-                    next.setMonth(next.getMonth() + 1);
-                    setCurrentMonth(next);
-                    setSelectedSlot(null);
-                    setSelectedDateKey(undefined);
-                  }}
-                  className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-2.5 py-1 text-[11px] font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60"
-                  aria-label="Mes siguiente"
-                >
-                  →
-                </button>
+
+              <div className="mb-1 grid grid-cols-7 text-center text-[10px] font-semibold uppercase tracking-wide text-[#d8d0c0]">
+                {weekDayLabels.map((label) => (
+                  <span key={label} className="py-1">
+                    {label}
+                  </span>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-7 gap-0.5 rounded-xl bg-[#0f0f0f] p-1.5 sm:gap-0.5 sm:p-2">
+                {weeks.map((week, idx) => (
+                  <div key={idx} className="contents">
+                    {week.map((day, dayIdx) => {
+                      if (!day) {
+                        return <div key={`empty-${idx}-${dayIdx}`} className="aspect-square rounded-lg" aria-hidden />;
+                      }
+
+                      const isActive = day.key === selectedDateKey;
+                      const disabled = day.status !== "disponible";
+
+                      return (
+                        <button
+                          key={day.key}
+                          onClick={() => {
+                            if (disabled) return;
+                            setSelectedDateKey(day.key);
+                            setSelectedSlot(null);
+                          }}
+                          disabled={disabled}
+                          className={`group flex aspect-square min-h-[28px] w-full flex-col items-center justify-center gap-0.5 rounded-lg px-1 py-1 text-center text-[9px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
+                            statusColor(day.status)
+                          } ${
+                            isActive
+                              ? "shadow-[0_0_0_1px_rgba(212,175,55,0.6),0_6px_18px_rgba(0,0,0,0.25)]"
+                              : "shadow-[0_4px_14px_rgba(0,0,0,0.18)]"
+                          } ${disabled ? "opacity-70" : "hover:scale-[1.005]"}`}
+                          aria-label={`Día ${day.label} ${day.status === "disponible" ? "disponible" : "no disponible"}`}
+                        >
+                          <span className="text-[11px] leading-none text-[#f7f1e3]">
+                            {day.date.getDate().toString().padStart(2, "0")}
+                          </span>
+                          <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${statusBadgeClasses(day.status)}`}>
+                            {day.status === "disponible"
+                              ? `${day.availableSlots.length} cupos`
+                              : day.status === "feriado"
+                                ? "Feriado"
+                                : "Ocupado"}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ))}
               </div>
             </div>
 
-            <div className="mb-1.5 grid grid-cols-7 text-center text-[10px] font-semibold uppercase tracking-wide text-[#d8d0c0]">
-              {weekDayLabels.map((label) => (
-                <span key={label} className="py-1">
-                  {label}
-                </span>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-7 gap-0.5 overflow-hidden sm:gap-1">
-              {weeks.map((week, idx) => (
-                <div key={idx} className="contents">
-                  {week.map((day, dayIdx) => {
-                    if (!day) {
-                      return <div key={`empty-${idx}-${dayIdx}`} className="aspect-square rounded-lg" aria-hidden />;
-                    }
-
-                    const isActive = day.key === selectedDateKey;
-                    const disabled = day.status !== "disponible";
-
+            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#0b0b0b]/80 p-2.5 sm:p-3 max-w-[520px] w-full mx-auto h-full">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="text-sm font-semibold text-[#f7f1e3]">Horarios del día</p>
+                {selectedDay?.status !== "disponible" && (
+                  <span className="rounded-full bg-rose-500/15 px-3 py-1 text-xs font-semibold text-rose-200 ring-1 ring-rose-500/40">
+                    No disponible
+                  </span>
+                )}
+              </div>
+              <div className="mt-2 grid grid-cols-2 gap-1 sm:grid-cols-3 lg:grid-cols-4">
+                {selectedDay?.availableSlots.length ? (
+                  selectedDay.availableSlots.map((slot) => {
+                    const isActive = slot === selectedSlot;
                     return (
                       <button
-                        key={day.key}
-                        onClick={() => {
-                          if (disabled) return;
-                          setSelectedDateKey(day.key);
-                          setSelectedSlot(null);
-                        }}
-                        disabled={disabled}
-                        className={`group flex aspect-square min-h-[30px] w-full flex-col items-center justify-center gap-0.5 rounded-lg px-1 py-1 text-center text-[10px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
-                          statusColor(day.status)
-                        } ${
+                        key={slot}
+                        onClick={() => setSelectedSlot(slot)}
+                        className={`rounded-lg px-2 py-1.5 text-[12px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
                           isActive
-                            ? "shadow-[0_0_0_1px_rgba(212,175,55,0.6),0_8px_22px_rgba(0,0,0,0.28)]"
-                            : "shadow-[0_6px_18px_rgba(0,0,0,0.22)]"
-                        } ${disabled ? "opacity-70" : "hover:scale-[1.01]"}`}
-                        aria-label={`Día ${day.label} ${day.status === "disponible" ? "disponible" : "no disponible"}`}
+                            ? "border border-[#d4af37] bg-[#0f0b0b] text-[#f7f1e3] shadow-[0_0_0_1px_rgba(212,175,55,0.35)]"
+                            : "border border-[#d4af37]/20 bg-[#0a0a0a] text-[#f7f1e3] hover:border-[#d4af37]/60"
+                        }`}
                       >
-                        <span className="text-xs leading-none text-[#f7f1e3]">
-                          {day.date.getDate().toString().padStart(2, "0")}
-                        </span>
-                        <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${statusBadgeClasses(day.status)}`}>
-                          {day.status === "disponible"
-                            ? `${day.availableSlots.length} cupos`
-                            : day.status === "feriado"
-                              ? "Feriado"
-                              : "Ocupado"}
-                        </span>
+                        {slot}
                       </button>
                     );
-                  })}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-[#d4af37]/30 bg-[#0b0b0b]/80 p-3 sm:p-3.5 max-w-[540px] w-full mx-auto">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="text-sm font-semibold text-[#f7f1e3]">Horarios del día</p>
-              {selectedDay?.status !== "disponible" && (
-                <span className="rounded-full bg-rose-500/15 px-3 py-1 text-xs font-semibold text-rose-200 ring-1 ring-rose-500/40">
-                  No disponible
-                </span>
-              )}
-            </div>
-            <div className="mt-2 grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-4">
-              {selectedDay?.availableSlots.length ? (
-                selectedDay.availableSlots.map((slot) => {
-                  const isActive = slot === selectedSlot;
-                  return (
-                    <button
-                      key={slot}
-                      onClick={() => setSelectedSlot(slot)}
-                      className={`rounded-lg px-2 py-2 text-[13px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
-                        isActive
-                          ? "border border-[#d4af37] bg-[#0f0b0b] text-[#f7f1e3] shadow-[0_0_0_1px_rgba(212,175,55,0.35)]"
-                          : "border border-[#d4af37]/20 bg-[#0a0a0a] text-[#f7f1e3] hover:border-[#d4af37]/60"
-                      }`}
-                    >
-                      {slot}
-                    </button>
-                  );
-                })
-              ) : (
-                <p className="col-span-full text-sm text-[#d8d0c0]">Elige otra fecha para ver horarios disponibles.</p>
-              )}
+                  })
+                ) : (
+                  <p className="col-span-full text-xs text-[#d8d0c0]">Elige otra fecha para ver horarios disponibles.</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="glass-panel panel-hover mx-auto flex w-full max-w-[520px] min-w-0 flex-col gap-2.5 rounded-2xl p-3 sm:p-3.5"
+          className="glass-panel panel-hover mx-auto flex w-full max-w-[500px] min-w-0 flex-col gap-2 rounded-2xl p-3"
         >
           <div className="text-center">
             <p className="small-caps text-[10px] text-[#d4af37]">Confirmación</p>
-            <h3 className="section-title mt-1 text-base font-semibold text-[#f7f1e3]">Datos para agendar y notificar</h3>
+            <h3 className="section-title mt-1 text-sm font-semibold text-[#f7f1e3]">Datos para agendar y notificar</h3>
           </div>
 
           <div className="grid gap-2 sm:grid-cols-2">
