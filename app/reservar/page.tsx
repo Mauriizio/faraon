@@ -26,9 +26,40 @@ const workingHours = [
   "17:00",
 ];
 
-const holidayKeys = new Set<string>([
-  // Formato YYYY-MM-DD; extiende esta lista con tus feriados locales.
-]);
+const fixedHolidays: Array<{ month: number; day: number; label: string }> = [
+  { month: 1, day: 1, label: "Año Nuevo" },
+  { month: 5, day: 1, label: "Día del Trabajador" },
+  { month: 5, day: 21, label: "Glorias Navales" },
+  { month: 6, day: 29, label: "San Pedro y San Pablo" },
+  { month: 7, day: 16, label: "Virgen del Carmen" },
+  { month: 8, day: 15, label: "Asunción" },
+  { month: 9, day: 18, label: "Independencia" },
+  { month: 9, day: 19, label: "Glorias del Ejército" },
+  { month: 10, day: 12, label: "Encuentro de Dos Mundos" },
+  { month: 10, day: 31, label: "Día de las Iglesias Evangélicas" },
+  { month: 11, day: 1, label: "Todos los Santos" },
+  { month: 12, day: 8, label: "Inmaculada Concepción" },
+  { month: 12, day: 25, label: "Navidad" },
+];
+
+function buildHolidaySet(start: Date, days: number) {
+  const years = new Set<number>();
+  years.add(start.getFullYear());
+
+  const end = new Date(start);
+  end.setDate(end.getDate() + days);
+  years.add(end.getFullYear());
+
+  const set = new Set<string>();
+  years.forEach((year) => {
+    fixedHolidays.forEach(({ month, day }) => {
+      const key = new Date(Date.UTC(year, month - 1, day)).toISOString().split("T")[0];
+      set.add(key);
+    });
+  });
+
+  return set;
+}
 
 const bookedSlots: Record<string, string[]> = {
   // Ejemplo de reservas existentes para ilustrar estados.
@@ -55,18 +86,18 @@ const weekDayLabels = ["D", "L", "M", "X", "J", "V", "S"];
 
 const calendarRangeDays = 35;
 
-function buildAvailability(): DayAvailability[] {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+function buildAvailability(startDate: Date, holidaySet: Set<string>): DayAvailability[] {
+  const start = new Date(startDate);
+  start.setHours(0, 0, 0, 0);
 
   return Array.from({ length: calendarRangeDays }, (_, idx) => {
-    const date = new Date(today);
-    date.setDate(today.getDate() + idx);
+    const date = new Date(start);
+    date.setDate(start.getDate() + idx);
     const key = date.toISOString().split("T")[0];
 
     const dayOfWeek = date.getDay();
     const isSunday = dayOfWeek === 0;
-    const isHoliday = holidayKeys.has(key);
+    const isHoliday = holidaySet.has(key);
     const blockedDay = isSunday || isHoliday;
 
     const existing = bookedSlots[key] ?? [];
@@ -89,18 +120,27 @@ function buildAvailability(): DayAvailability[] {
 
 function statusBadgeClasses(status: AvailabilityStatus) {
   if (status === "disponible") return "bg-emerald-500/15 text-emerald-200 ring-1 ring-emerald-500/40";
-  if (status === "sin-cupos") return "bg-rose-500/15 text-rose-200 ring-1 ring-rose-500/40";
-  return "bg-[#4a1f2f]/30 text-[#f7f1e3] ring-1 ring-[#4a1f2f]/60";
+  if (status === "sin-cupos") return "bg-amber-500/15 text-amber-100 ring-1 ring-amber-500/40";
+  return "bg-rose-700/30 text-rose-100 ring-1 ring-rose-700/60";
 }
 
 function statusColor(status: AvailabilityStatus) {
   if (status === "disponible") return "bg-emerald-500/20 text-emerald-100 ring-1 ring-emerald-500/40";
-  if (status === "sin-cupos") return "bg-rose-500/30 text-rose-100 ring-1 ring-rose-500/40";
-  return "bg-[#4a1f2f]/50 text-[#f7f1e3] ring-1 ring-[#4a1f2f]/70";
+  if (status === "sin-cupos") return "bg-amber-500/20 text-amber-50 ring-1 ring-amber-500/40";
+  return "bg-rose-700/50 text-rose-50 ring-1 ring-rose-700/70";
 }
 
 export default function ReservarPage() {
-  const availability = useMemo(buildAvailability, []);
+  const startOfCalendar = useMemo(() => {
+    const base = new Date();
+    base.setHours(0, 0, 0, 0);
+    base.setDate(base.getDate() - base.getDay());
+    return base;
+  }, []);
+
+  const holidaySet = useMemo(() => buildHolidaySet(startOfCalendar, calendarRangeDays), [startOfCalendar]);
+
+  const availability = useMemo(() => buildAvailability(startOfCalendar, holidaySet), [holidaySet, startOfCalendar]);
   const availabilityMap = useMemo(() => {
     const map = new Map<string, DayAvailability>();
     availability.forEach((day) => map.set(day.key, day));
@@ -112,13 +152,6 @@ export default function ReservarPage() {
     [availability],
   );
 
-  const startOfCalendar = useMemo(() => {
-    const base = new Date();
-    base.setHours(0, 0, 0, 0);
-    base.setDate(base.getDate() - base.getDay());
-    return base;
-  }, []);
-
   const calendarDays = useMemo(() => {
     return Array.from({ length: calendarRangeDays }, (_, idx) => {
       const date = new Date(startOfCalendar);
@@ -129,15 +162,16 @@ export default function ReservarPage() {
       if (existing) return existing;
 
       const isSunday = date.getDay() === 0;
+      const isHoliday = holidaySet.has(key);
       return {
         date,
         key,
         label: date.toLocaleDateString("es-ES", { day: "2-digit", month: "short" }),
-        status: isSunday ? "feriado" : "sin-cupos",
+        status: isSunday || isHoliday ? "feriado" : "sin-cupos",
         availableSlots: [],
       } satisfies DayAvailability;
     });
-  }, [availabilityMap, startOfCalendar]);
+  }, [availabilityMap, holidaySet, startOfCalendar]);
 
   const weeks = useMemo(() => {
     const chunks: DayAvailability[][] = [];
@@ -154,6 +188,7 @@ export default function ReservarPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [statusMessage, setStatusMessage] = useState<string>("");
+  const [statusType, setStatusType] = useState<"success" | "error" | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const selectedDay = selectedDateKey
@@ -174,6 +209,7 @@ export default function ReservarPage() {
 
     setSubmitting(true);
     setStatusMessage("");
+    setStatusType(null);
 
     try {
       const response = await fetch("/api/reservas", {
@@ -192,8 +228,11 @@ export default function ReservarPage() {
       if (!response.ok) throw new Error("No se pudo registrar la reserva");
       const result = await response.json();
       setStatusMessage(result.message ?? "Reserva registrada. Enviaremos la confirmación por correo.");
+      setStatusType("success");
+      setSelectedSlot(null);
     } catch {
       setStatusMessage("Hubo un problema al enviar la reserva. Intenta nuevamente.");
+      setStatusType("error");
     } finally {
       setSubmitting(false);
     }
@@ -206,7 +245,7 @@ export default function ReservarPage() {
       description="Calendario móvil-first que resalta horarios disponibles en verde y bloquea feriados o cupos ocupados en rojo. Sin login, solo tus datos esenciales."
       className="pb-24"
     >
-      <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+      <div className="mx-auto grid w-full max-w-6xl gap-6 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="glass-panel panel-hover flex flex-col gap-6 rounded-2xl p-6 sm:p-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -226,12 +265,12 @@ export default function ReservarPage() {
               Disponible
             </span>
             <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-3 py-1 ring-1 ring-[#d4af37]/20">
-              <span className="h-3 w-3 rounded-full bg-rose-500/80 ring-2 ring-rose-500/40" />
+              <span className="h-3 w-3 rounded-full bg-amber-400/80 ring-2 ring-amber-500/40" />
               Sin cupos / bloqueado
             </span>
             <span className="inline-flex items-center gap-2 rounded-full bg-[#0f0b0b] px-3 py-1 ring-1 ring-[#d4af37]/20">
-              <span className="h-3 w-3 rounded-full bg-[#4a1f2f] ring-2 ring-[#4a1f2f]/60" />
-              Feriado / domingo
+              <span className="h-3 w-3 rounded-full bg-rose-600 ring-2 ring-rose-700/70" />
+              Feriado / domingo (rojo)
             </span>
           </div>
 
@@ -254,7 +293,7 @@ export default function ReservarPage() {
               ))}
             </div>
 
-            <div className="grid grid-cols-7 gap-2 sm:gap-3">
+            <div className="grid grid-cols-7 gap-1.5 overflow-hidden sm:gap-2">
               {weeks.map((week, idx) => (
                 <div key={idx} className="contents">
                   {week.map((day) => {
@@ -269,7 +308,7 @@ export default function ReservarPage() {
                           setSelectedSlot(null);
                         }}
                         disabled={disabled}
-                        className={`group flex min-h-[70px] flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-center text-xs font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
+                        className={`group flex aspect-[6/7] min-h-[54px] w-full flex-col items-center justify-center gap-1 rounded-xl px-1.5 py-1.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
                           statusColor(day.status)
                         } ${isActive ? "shadow-[0_0_0_1px_rgba(212,175,55,0.6),0_10px_30px_rgba(0,0,0,0.35)]" : "shadow-[0_10px_30px_rgba(0,0,0,0.25)]"} ${
                           disabled ? "opacity-70" : "hover:scale-[1.02]"
@@ -407,7 +446,17 @@ export default function ReservarPage() {
             {submitting ? "Agendando..." : "Agendar"}
           </CTAButton>
 
-          {statusMessage && <p className="text-sm text-[#d8d0c0]">{statusMessage}</p>}
+          {statusMessage && (
+            <p
+              className={`rounded-xl border px-4 py-3 text-sm ${
+                statusType === "success"
+                  ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-100"
+                  : "border-rose-500/50 bg-rose-500/10 text-rose-100"
+              }`}
+            >
+              {statusMessage}
+            </p>
+          )}
         </form>
       </div>
     </SectionShell>
