@@ -14,7 +14,7 @@ type GalleryItem = {
   tag: string;
 };
 
-const galleryItems: GalleryItem[] = Array.from({ length: 18 }, (_, index) => {
+const galleryItems: GalleryItem[] = Array.from({ length: 14 }, (_, index) => {
   const number = index + 1;
   return {
     id: `pic-${number}`,

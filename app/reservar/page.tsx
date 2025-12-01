@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { CTAButton } from "../components/CTAButton";
 import { SectionShell } from "../components/SectionShell";
 
-type AvailabilityStatus = "disponible" | "sin-cupos" | "feriado";
+type AvailabilityStatus = "disponible" | "sin-cupos" | "⛔";
 
 type DayAvailability = {
   date: Date;
@@ -96,7 +96,7 @@ function buildDayAvailability(date: Date, holidaySet: Set<string>, todayKey: str
   const availableSlots = blockedDay ? [] : workingHours.filter((slot) => !existing.includes(slot));
 
   let status: AvailabilityStatus = "disponible";
-  if (blockedDay) status = isHoliday || isSunday ? "feriado" : "sin-cupos";
+  if (blockedDay) status = isHoliday || isSunday ? "⛔" : "sin-cupos";
   else if (availableSlots.length === 0) status = "sin-cupos";
 
   return {
@@ -357,8 +357,8 @@ export default function ReservarPage() {
                           >
                             {day.status === "disponible"
                               ? day.availableSlots.length
-                              : day.status === "feriado"
-                                ? "Feriado"
+                              : day.status === "⛔"
+                                ? "⛔"
                                 : "Ocupado"}
                           </span>
                         </button>
