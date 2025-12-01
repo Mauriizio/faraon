@@ -8,12 +8,9 @@ import { CTAButton } from "./CTAButton";
 const navItems = [
   { href: "/servicios", label: "Servicios" },
   { href: "/catalogo", label: "Catálogo" },
-<<<<<<< HEAD
   { href: "/sobre", label: "Historia" },
-  { href: "/reservar", label: "Reservar" },
-=======
-  { href: "/sobre", label: "Sobre" },
->>>>>>> origin/codex/create-initial-website-structure-with-next.js-wtr9lq
+  // 👇 Quitamos el "Reservar" del menú para que el CTA sea la única llamada
+  // { href: "/reservar", label: "Reservar" },
 ];
 
 export function Header() {
@@ -29,40 +26,27 @@ export function Header() {
           className="group relative flex items-center gap-2 text-lg font-semibold text-[#f7f1e3]"
         >
           <span
-<<<<<<< HEAD
             className="absolute inset-0 rounded-full bg-[#d4af37]/10 blur-xl transition group-hover:bg-[#d4af37]/20"
             aria-hidden
           />
-          <span className="relative flex items-center gap-2">
-            <span className="relative h-9 w-9 overflow-hidden rounded-full border border-[#d4af37]/60 bg-[#0b0b0b]/60 shadow-[0_0_0_1px_rgba(212,175,55,0.25)]">
+          <span className="relative flex items-center gap-3">
+            {/* 👇 Logo más grande */}
+            <span className="relative h-11 w-11 overflow-hidden rounded-full border border-[#d4af37]/60 bg-[#0b0b0b]/60 shadow-[0_0_0_1px_rgba(212,175,55,0.25)]">
               <Image
                 src="/logo.png"
                 alt="Logo Faraón Barber"
                 fill
-                sizes="36px"
+                sizes="44px"
                 className="object-cover"
               />
             </span>
-            <span className="section-title text-xl sm:text-2xl">
+            <span className="section-title text-[22px] sm:text-[24px]">
               Faraón Barber
             </span>
           </span>
         </Link>
 
         {/* NAV DESKTOP */}
-=======
-            className="absolute inset-0 rounded-full bg-[#d4af37]/14 blur-xl transition group-hover:bg-[#d4af37]/30"
-            aria-hidden
-          />
-          <span className="relative flex items-center gap-2">
-            <span className="relative h-11 w-11 overflow-hidden rounded-full border border-[#d4af37]/70 bg-[#0b0b0b]/70 shadow-[0_0_0_1px_rgba(212,175,55,0.35)]">
-              <Image src="/logo.png" alt="Logo Faraón Barber" fill sizes="44px" className="object-cover" />
-            </span>
-            <span className="section-title text-xl sm:text-2xl">Faraón Barber</span>
-          </span>
-        </Link>
-
->>>>>>> origin/codex/create-initial-website-structure-with-next.js-wtr9lq
         <nav className="hidden items-center gap-4 text-sm font-medium text-[#d8d0c0] md:flex">
           {navItems.map((item) => (
             <Link
@@ -71,24 +55,17 @@ export function Header() {
               className="group relative px-3 py-2 transition hover:text-[#f7f1e3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d4af37]"
             >
               <span className="relative z-10">{item.label}</span>
-<<<<<<< HEAD
               <span className="pointer-events-none absolute inset-x-1/4 bottom-1 h-px rounded-full bg-[#d4af37]/60 blur-md opacity-0 transition group-hover:opacity-100" />
               <span className="pointer-events-none absolute inset-0 rounded-full bg-[#d4af37]/0 blur-xl transition group-hover:bg-[#d4af37]/10" />
-=======
-              <span className="pointer-events-none absolute inset-x-1/5 bottom-1 h-0.5 rounded-full bg-[#d4af37]/80 blur-lg opacity-0 transition duration-200 group-hover:opacity-100" />
-              <span className="pointer-events-none absolute inset-0 rounded-full bg-[#d4af37]/0 blur-[18px] transition duration-200 group-hover:bg-[#d4af37]/16" />
->>>>>>> origin/codex/create-initial-website-structure-with-next.js-wtr9lq
             </Link>
           ))}
+          {/* ÚNICO CTA de reserva */}
           <CTAButton href="/reservar" className="ml-2" aria-label="Reservar hora">
             Reservar hora
           </CTAButton>
         </nav>
 
-<<<<<<< HEAD
         {/* BOTÓN MOBILE */}
-=======
->>>>>>> origin/codex/create-initial-website-structure-with-next.js-wtr9lq
         <button
           onClick={toggleMenu}
           className="group relative flex h-12 w-12 items-center justify-center rounded-full border border-[#d4af37]/50 bg-gradient-to-b from-[#0c0c0c] via-[#121212] to-[#0c0c0c] text-[#f7f1e3] shadow-[0_0_0_1px_rgba(212,175,55,0.2),0_10px_30px_-12px_rgba(0,0,0,0.6)] transition hover:border-[#d4af37]/80 hover:shadow-[0_0_0_1px_rgba(212,175,55,0.35),0_12px_36px_-10px_rgba(0,0,0,0.65)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] md:hidden"
@@ -119,10 +96,7 @@ export function Header() {
         </button>
       </div>
 
-<<<<<<< HEAD
       {/* NAV MOBILE */}
-=======
->>>>>>> origin/codex/create-initial-website-structure-with-next.js-wtr9lq
       <div
         className={`md:hidden transition-[max-height,opacity] duration-300 ease-in-out ${
           open ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
@@ -142,15 +116,12 @@ export function Header() {
               </div>
             </Link>
           ))}
-<<<<<<< HEAD
+          {/* CTA principal también en mobile */}
           <CTAButton
             href="/reservar"
             className="w-full justify-center"
             onClick={() => setOpen(false)}
           >
-=======
-          <CTAButton href="/reservar" className="w-full justify-center" onClick={() => setOpen(false)}>
->>>>>>> origin/codex/create-initial-website-structure-with-next.js-wtr9lq
             Reservar ahora
           </CTAButton>
         </div>
