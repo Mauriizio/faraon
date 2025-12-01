@@ -1,83 +1,317 @@
+"use client";
+
+import { useMemo, useState } from "react";
 import { CTAButton } from "../components/CTAButton";
 import { SectionShell } from "../components/SectionShell";
 
-const slots = ["10:00", "11:30", "13:00", "15:00", "17:30", "19:00"];
+type AvailabilityStatus = "disponible" | "sin-cupos" | "feriado";
+
+type DayAvailability = {
+  date: Date;
+  key: string;
+  label: string;
+  status: AvailabilityStatus;
+  availableSlots: string[];
+};
+
+const workingHours = [
+  "09:00",
+  "10:00",
+  "11:00",
+  "12:00",
+  "13:00",
+  "14:00",
+  "15:00",
+  "16:00",
+  "17:00",
+];
+
+const holidayKeys = new Set<string>([
+  // Formato YYYY-MM-DD; extiende esta lista con tus feriados locales.
+]);
+
+const bookedSlots: Record<string, string[]> = {
+  // Ejemplo de reservas existentes para ilustrar estados.
+};
+
+const services = [
+  "Corte clásico adulto",
+  "Corte + barba",
+  "Corte para niños clásico",
+  "Corte con tijeras",
+  "Corte degradados",
+  "Cejas",
+  "Barba",
+  "Afeitado completo",
+  "Visos platinados",
+  "Ondulación permanente",
+  "Tinte para las canas",
+  "Alisado permanente keratina",
+  "Pigmentación de barba",
+  "Corte desgradado full servicio + barba pigmentada",
+];
+
+function buildAvailability(): DayAvailability[] {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  return Array.from({ length: 21 }, (_, idx) => {
+    const date = new Date(today);
+    date.setDate(today.getDate() + idx);
+    const key = date.toISOString().split("T")[0];
+
+    const dayOfWeek = date.getDay();
+    const isSunday = dayOfWeek === 0;
+    const isHoliday = holidayKeys.has(key);
+    const blockedDay = isSunday || isHoliday;
+
+    const existing = bookedSlots[key] ?? [];
+    const availableSlots = blockedDay
+      ? []
+      : workingHours.filter((slot) => !existing.includes(slot));
+
+    let status: AvailabilityStatus = "disponible";
+    if (blockedDay) status = "feriado";
+    else if (availableSlots.length === 0) status = "sin-cupos";
+
+    const label = date.toLocaleDateString("es-ES", {
+      weekday: "short",
+      day: "2-digit",
+      month: "short",
+    });
+
+    return { date, key, label, status, availableSlots };
+  }).filter(({ date }) => date.getDay() !== 0); // Filtra domingos fuera de la grilla.
+}
+
+function statusBadgeClasses(status: AvailabilityStatus) {
+  if (status === "disponible") return "bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/40";
+  if (status === "sin-cupos") return "bg-rose-500/15 text-rose-200 ring-1 ring-rose-500/40";
+  return "bg-[#4a1f2f]/30 text-[#f7f1e3] ring-1 ring-[#4a1f2f]/60";
+}
 
 export default function ReservarPage() {
+  const availability = useMemo(buildAvailability, []);
+  const [selectedDateKey, setSelectedDateKey] = useState<string>(availability[0]?.key);
+  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
+  const [service, setService] = useState(services[0]);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [statusMessage, setStatusMessage] = useState<string>("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const selectedDay = availability.find((day) => day.key === selectedDateKey);
+
+  const isSubmitDisabled =
+    !selectedDay ||
+    !selectedSlot ||
+    !name.trim() ||
+    !email.trim() ||
+    !phone.trim() ||
+    selectedDay.status !== "disponible";
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (isSubmitDisabled || !selectedDay || !selectedSlot) return;
+
+    setSubmitting(true);
+    setStatusMessage("");
+
+    try {
+      const response = await fetch("/api/reservas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          service,
+          date: selectedDay.key,
+          slot: selectedSlot,
+        }),
+      });
+
+      if (!response.ok) throw new Error("No se pudo registrar la reserva");
+      const result = await response.json();
+      setStatusMessage(result.message ?? "Reserva registrada. Enviaremos la confirmación por correo.");
+    } catch {
+      setStatusMessage("Hubo un problema al enviar la reserva. Intenta nuevamente.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <SectionShell
       eyebrow="Reserva principal"
-      title="Agenda dorada, pensada para móvil"
-      description="El corazón del sitio: un flujo de reserva claro, rápido y accesible. Preparado para integrar pagos y recordatorios."
-      className="pb-20"
+      title="Agenda profesional con disponibilidad en vivo"
+      description="Calendario móvil-first que resalta horarios disponibles en verde y bloquea feriados o cupos ocupados en rojo. Sin login, solo tus datos esenciales."
+      className="pb-24"
     >
-      <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="glass-panel panel-hover flex flex-col gap-5 rounded-2xl p-8">
-          <div>
-            <p className="small-caps text-xs text-[#d4af37]">Proceso</p>
-            <h3 className="section-title text-3xl font-semibold text-[#f7f1e3]">Reserva en tres pasos</h3>
+      <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="glass-panel panel-hover flex flex-col gap-6 rounded-2xl p-6 sm:p-8">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="small-caps text-xs text-[#d4af37]">Disponibilidad</p>
+              <h3 className="section-title text-2xl font-semibold text-[#f7f1e3]">
+                Selecciona la fecha y el horario
+              </h3>
+            </div>
+            <span className="rounded-full bg-[#0f0b0b] px-4 py-2 text-xs font-semibold text-[#d4af37] ring-1 ring-[#d4af37]/30">
+              Lun a Sáb · 09:00 - 18:00
+            </span>
           </div>
-          <ol className="space-y-4 text-sm text-[#d8d0c0]">
-            <li className="flex gap-3">
-              <span className="mt-0.5 h-6 w-6 rounded-full border border-[#d4af37]/50 text-center text-xs leading-6 text-[#d4af37]">
-                1
-              </span>
-              Selecciona fecha y horario disponible.
-            </li>
-            <li className="flex gap-3">
-              <span className="mt-0.5 h-6 w-6 rounded-full border border-[#d4af37]/50 text-center text-xs leading-6 text-[#d4af37]">
-                2
-              </span>
-              Elige el servicio y confirma tus datos. Integración de pago llegará después.
-            </li>
-            <li className="flex gap-3">
-              <span className="mt-0.5 h-6 w-6 rounded-full border border-[#d4af37]/50 text-center text-xs leading-6 text-[#d4af37]">
-                3
-              </span>
-              Recibe confirmación y recordatorios automáticos en tu correo o WhatsApp.
-            </li>
-          </ol>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {slots.map((slot) => (
-              <button
-                key={slot}
-                className="rounded-xl border border-[#d4af37]/30 bg-[#0f0f0f] px-3 py-3 text-sm font-semibold text-[#f7f1e3] transition hover:border-[#d4af37] hover:bg-[#151515] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37]"
-              >
-                {slot}
-              </button>
-            ))}
+
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {availability.map((day) => {
+              const isActive = day.key === selectedDateKey;
+              const badge = statusBadgeClasses(day.status);
+              const disabled = day.status !== "disponible";
+              return (
+                <button
+                  key={day.key}
+                  onClick={() => {
+                    setSelectedDateKey(day.key);
+                    setSelectedSlot(null);
+                  }}
+                  disabled={disabled}
+                  className={`group rounded-2xl border px-3 py-3 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
+                    isActive ? "border-[#d4af37] bg-[#0f0b0b] shadow-[0_0_0_1px_rgba(212,175,55,0.35)]" : "border-[#d4af37]/20 bg-[#0b0b0b]/70"
+                  } ${disabled ? "opacity-60" : "hover:border-[#d4af37]/60"}`}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-sm font-semibold text-[#f7f1e3]">{day.label}</p>
+                    <span className={`rounded-full px-2 py-1 text-[11px] font-semibold ${badge}`}>
+                      {day.status === "disponible"
+                        ? `${day.availableSlots.length} cupos`
+                        : day.status === "feriado"
+                          ? "Feriado"
+                          : "Sin cupos"}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-xs text-[#d8d0c0]">
+                    {day.status === "disponible" ? "Tap para ver horarios" : "No disponible"}
+                  </p>
+                </button>
+              );
+            })}
           </div>
-          <CTAButton className="w-full justify-center">Continuar con mis datos</CTAButton>
-          <p className="text-xs text-[#d8d0c0]">
-            El flujo está listo para conectar con tu sistema de reservas o pagos preferido. Pensado para ser un ancla en el menú y
-            siempre accesible.
-          </p>
+
+          <div className="rounded-2xl border border-[#d4af37]/30 bg-[#0b0b0b]/80 p-5">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-sm font-semibold text-[#f7f1e3]">Horarios del día</p>
+              {selectedDay?.status !== "disponible" && (
+                <span className="rounded-full bg-rose-500/15 px-3 py-1 text-xs font-semibold text-rose-200 ring-1 ring-rose-500/40">
+                  No disponible
+                </span>
+              )}
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+              {selectedDay?.availableSlots.length ? (
+                selectedDay.availableSlots.map((slot) => {
+                  const isActive = slot === selectedSlot;
+                  return (
+                    <button
+                      key={slot}
+                      onClick={() => setSelectedSlot(slot)}
+                      className={`rounded-xl px-3 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${
+                        isActive
+                          ? "border border-[#d4af37] bg-[#0f0b0b] text-[#f7f1e3] shadow-[0_0_0_1px_rgba(212,175,55,0.35)]"
+                          : "border border-[#d4af37]/20 bg-[#0a0a0a] text-[#f7f1e3] hover:border-[#d4af37]/60"
+                      }`}
+                    >
+                      {slot}
+                    </button>
+                  );
+                })
+              ) : (
+                <p className="col-span-full text-sm text-[#d8d0c0]">Elige otra fecha para ver horarios disponibles.</p>
+              )}
+            </div>
+          </div>
         </div>
 
-        <div className="glass-panel panel-hover flex flex-col gap-5 rounded-2xl p-8">
-          <div className="flex items-start justify-between">
+        <form
+          onSubmit={handleSubmit}
+          className="glass-panel panel-hover flex flex-col gap-5 rounded-2xl p-6 sm:p-8"
+        >
+          <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="small-caps text-xs text-[#d4af37]">Acceso rápido</p>
-              <h3 className="section-title text-2xl font-semibold text-[#f7f1e3]">Botón destacado siempre visible</h3>
+              <p className="small-caps text-xs text-[#d4af37]">Confirmación</p>
+              <h3 className="section-title text-2xl font-semibold text-[#f7f1e3]">Datos para agendar y notificar</h3>
             </div>
-            <span className="rounded-full bg-[#4a1f2f]/60 px-3 py-1 text-xs font-semibold text-[#f7f1e3]">CTA</span>
+            <span className="rounded-full bg-[#4a1f2f]/60 px-3 py-1 text-xs font-semibold text-[#f7f1e3]">Correo al barbero y cliente</span>
           </div>
-          <p className="text-sm leading-relaxed text-[#d8d0c0]">
-            El botón “Reservar hora” vive en el header y se replica en cada sección clave. En móvil, el menú hamburguesa lo
-            mantiene a un toque; en desktop, está siempre en la barra.
-          </p>
-          <div className="rounded-2xl border border-[#d4af37]/20 bg-[#0a0a0a]/70 p-4 text-sm text-[#f7f1e3]">
-            <p className="font-semibold">Próximos pasos</p>
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-[#d8d0c0]">
-              <li>Conectar con motor de reservas.</li>
-              <li>Habilitar pagos y recordatorios automáticos.</li>
-              <li>Agregar login para clientes frecuentes.</li>
-            </ul>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="flex flex-col gap-2 text-sm text-[#d8d0c0]">
+              Nombre completo
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="rounded-xl border border-[#d4af37]/30 bg-[#0a0a0a] px-3 py-2 text-[#f7f1e3] placeholder:text-[#8b7f6c] focus:border-[#d4af37] focus:outline-none"
+                placeholder="Tu nombre"
+              />
+            </label>
+            <label className="flex flex-col gap-2 text-sm text-[#d8d0c0]">
+              Correo electrónico
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="rounded-xl border border-[#d4af37]/30 bg-[#0a0a0a] px-3 py-2 text-[#f7f1e3] placeholder:text-[#8b7f6c] focus:border-[#d4af37] focus:outline-none"
+                placeholder="nombre@correo.com"
+              />
+            </label>
+            <label className="flex flex-col gap-2 text-sm text-[#d8d0c0]">
+              Teléfono / WhatsApp
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+                className="rounded-xl border border-[#d4af37]/30 bg-[#0a0a0a] px-3 py-2 text-[#f7f1e3] placeholder:text-[#8b7f6c] focus:border-[#d4af37] focus:outline-none"
+                placeholder="Ej: +57 300 000 0000"
+              />
+            </label>
+            <label className="flex flex-col gap-2 text-sm text-[#d8d0c0]">
+              Servicio deseado
+              <select
+                value={service}
+                onChange={(e) => setService(e.target.value)}
+                className="rounded-xl border border-[#d4af37]/30 bg-[#0a0a0a] px-3 py-2 text-[#f7f1e3] focus:border-[#d4af37] focus:outline-none"
+              >
+                {services.map((item) => (
+                  <option key={item} value={item} className="bg-[#0a0a0a] text-[#f7f1e3]">
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </label>
           </div>
-          <CTAButton href="/" variant="ghost" className="w-full justify-center">
-            Volver al inicio
+
+          <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/70 p-4 text-xs text-[#d8d0c0]">
+            <p className="font-semibold text-[#f7f1e3]">Correos automáticos</p>
+            <p className="mt-2 leading-relaxed">
+              Este flujo está listo para conectar con tu proveedor SMTP o API de correo. Al confirmar, enviaremos un correo al
+              barbero con los detalles y otro al cliente con la confirmación y la cita. Configura tus credenciales en el
+              endpoint <code className="rounded bg-[#0f0f0f] px-1 py-0.5 text-[#d4af37]">/api/reservas</code>.
+            </p>
+          </div>
+
+          <CTAButton
+            type="submit"
+            className="w-full justify-center"
+            disabled={isSubmitDisabled || submitting}
+          >
+            {submitting ? "Agendando..." : "Agendar"}
           </CTAButton>
-        </div>
+
+          {statusMessage && <p className="text-sm text-[#d8d0c0]">{statusMessage}</p>}
+        </form>
       </div>
     </SectionShell>
   );
