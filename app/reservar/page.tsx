@@ -305,9 +305,9 @@ export default function ReservarPage() {
             </span>
           </div>
 
-          <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-[1fr_0.9fr] sm:items-start">
-            <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-2.5 sm:p-3 max-w-[760px] w-full mx-auto overflow-x-auto">
-              <div className="min-w-[560px] space-y-2">
+          <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-[1fr_0.9fr] sm:items-start">
+            <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-2.5 sm:p-3 w-full mx-auto">
+              <div className="space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-wide text-[#d4af37]">Calendario</p>
@@ -395,7 +395,7 @@ export default function ReservarPage() {
                               setSelectedSlot(null);
                             }}
                             disabled={disabled}
-                            className={`group flex aspect-square min-h-[54px] min-w-[54px] w-full flex-col items-center justify-center gap-2 rounded-2xl px-3 py-3 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${statusColor(
+                            className={`group flex aspect-square min-h-[64px] w-full flex-col items-center justify-center gap-2 rounded-2xl px-2.5 py-3 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${statusColor(
                               day.status,
                             )} ${
                               isActive
