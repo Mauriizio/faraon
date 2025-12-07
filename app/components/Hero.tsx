@@ -3,12 +3,12 @@ import { CTAButton } from "./CTAButton";
 
 export function Hero() {
   return (
-    <section className="hero-shell relative overflow-hidden bg-white pb-16 pt-14 text-[#1b1b1b] sm:pt-16 lg:pb-24 lg:pt-20">
+    <section className="hero-shell relative overflow-hidden bg-[#f8f2e6] pb-16 pt-14 text-[#1b1b1b] sm:pt-16 lg:pb-24 lg:pt-20">
       <div className="hero-stripes" aria-hidden />
-      <div className="absolute inset-0 bg-gradient-to-b from-white via-white to-[#f5f0e6]" aria-hidden />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#fdf8f0] via-[#f7f1e6] to-[#f1e6d5]" aria-hidden />
 
       <div className="relative mx-auto flex max-w-5xl flex-col items-center px-4 text-center sm:px-6 lg:px-8">
-        <div className="fade-up relative flex w-full flex-col items-center gap-6 rounded-[32px] border border-[#d4af37]/50 bg-white/95 px-6 py-8 shadow-[0_18px_40px_rgba(0,0,0,0.08)] sm:px-10 sm:py-12">
+        <div className="fade-up relative flex w-full flex-col items-center gap-6 rounded-[32px] border border-[#d4af37]/55 bg-white/92 px-6 py-8 shadow-[0_18px_40px_rgba(0,0,0,0.1)] sm:px-10 sm:py-12">
           <div className="hero-poles" aria-hidden />
           <Image
             src="/logo.png"

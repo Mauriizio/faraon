@@ -114,12 +114,12 @@ function buildDayAvailability(
 
 function statusBadgeClasses(status: AvailabilityStatus) {
   if (status === "disponible") {
-    return "bg-emerald-500/15 text-emerald-200 ring-1 ring-emerald-500/40";
+    return "rounded-md bg-emerald-500/18 text-emerald-200 ring-1 ring-emerald-500/40";
   }
   if (status === "sin-cupos") {
-    return "bg-amber-500/15 text-amber-100 ring-1 ring-amber-500/40";
+    return "rounded-md bg-amber-500/18 text-amber-100 ring-1 ring-amber-500/40";
   }
-  return "bg-rose-700/30 text-rose-100 ring-1 ring-rose-700/60";
+  return "rounded-md bg-rose-700/30 text-rose-100 ring-1 ring-rose-700/60";
 }
 
 function statusColor(status: AvailabilityStatus) {
@@ -395,24 +395,24 @@ export default function ReservarPage() {
                               setSelectedSlot(null);
                             }}
                             disabled={disabled}
-                            className={`group flex aspect-square min-h-[64px] w-full flex-col items-center justify-center gap-2 rounded-2xl px-2.5 py-3 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${statusColor(
+                            className={`group flex aspect-square min-h-[70px] w-full flex-col items-center justify-between rounded-xl border border-[#d4af37]/25 bg-[#0c0c0c] px-2.5 py-2.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${statusColor(
                               day.status,
                             )} ${
                               isActive
                                 ? "shadow-[0_0_0_1px_rgba(212,175,55,0.6),0_6px_18px_rgba(0,0,0,0.25)]"
                                 : "shadow-[0_6px_18px_rgba(0,0,0,0.25)]"
-                            } ${disabled ? "opacity-70" : "hover:translate-y-[-1px]"}`}
+                            } ${disabled ? "opacity-70" : "hover:-translate-y-0.5"}`}
                             aria-label={`Día ${day.label} ${
                               day.status === "disponible"
                                 ? "disponible"
                                 : "no disponible"
                             }`}
                           >
-                            <span className="text-[12px] leading-none text-[#f7f1e3]">
+                            <span className="text-[13px] leading-none text-[#f7f1e3]">
                               {day.date.getDate().toString().padStart(2, "0")}
                             </span>
                             <span
-                              className={`rounded-full px-2.5 py-1 text-[10px] font-semibold leading-tight ${statusBadgeClasses(
+                              className={`inline-flex min-w-[42px] items-center justify-center rounded-lg px-2 py-1 text-[10px] font-semibold leading-tight ${statusBadgeClasses(
                                 day.status,
                               )}`}
                             >
