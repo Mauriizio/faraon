@@ -111,7 +111,7 @@ export default function CatalogoPage() {
           Galería curada con los últimos 14 servicios. Toca una imagen en móvil para verla a detalle.
         </p>
         <CTAButton href="/reservar" className="w-full justify-center sm:w-auto">
-          Reserva tu estilo
+          Reservar
         </CTAButton>
       </div>
 

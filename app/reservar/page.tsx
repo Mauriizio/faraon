@@ -297,11 +297,11 @@ export default function ReservarPage() {
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-[#0f0b0b] px-2 py-1 ring-1 ring-[#d4af37]/20">
               <span className="h-1.5 w-1.5 rounded-full bg-amber-400/80 ring-2 ring-amber-500/40" />
-              Sin cupos / bloqueado
+              Sin cupos / Full
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-[#0f0b0b] px-2 py-1 ring-1 ring-[#d4af37]/20">
               <span className="h-1.5 w-1.5 rounded-full bg-rose-600 ring-2 ring-rose-700/70" />
-              Feriado / domingo (rojo)
+              Feriado
             </span>
           </div>
 
@@ -423,7 +423,7 @@ export default function ReservarPage() {
                               ? day.availableSlots.length
                               : day.status === "⛔"
                               ? "⛔"
-                              : "Ocupado"}
+                              : "Full"}
                           </span>
                         </button>
                       );
