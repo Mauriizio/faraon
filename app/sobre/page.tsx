@@ -3,19 +3,19 @@ import { SectionShell } from "../components/SectionShell";
 
 const milestones = [
   {
-    year: "2012",
-    title: "Inicio en el barrio",
-    detail: "Tijeras en mano y un sueño: ofrecer cortes que mezclaran tradición con street style.",
+    year: "2010",
+    title: "Raíces en Venezuela",
+    detail: "Moisés Sánchez comienza a cortar en Barquisimeto. De la barbería de barrio a perfilar fades de autor.",
   },
   {
     year: "2017",
-    title: "Estudio boutique",
-    detail: "Primer local con concepto faraón: luz cálida, aromas especiados y experiencia ritual.",
+    title: "Salto a Chile",
+    detail: "Llega a Santiago y abre agenda propia. Se convierte en referente de la comunidad venezolana con técnica y calidez.",
   },
   {
     year: "2024",
-    title: "Mobile-first",
-    detail: "Agenda digital, recordatorios automáticos y diseño pensado para reservar desde el celular.",
+    title: "Faraón digital",
+    detail: "Crea la experiencia mobile-first: reservas ágiles, recordatorios automáticos y estilo boutique en cada visita.",
   },
 ];
 
@@ -29,13 +29,18 @@ export default function SobrePage() {
       <div className="glass-panel grid gap-6 rounded-2xl p-8 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-5">
           <p className="text-base leading-relaxed text-[#d8d0c0]">
-            Soy Karim, barbero desde hace más de una década. Aprendí en barberías clásicas, perfeccioné fades con maestros
-            latinos y ahora llevo el estilo faraón a cada cliente. Me obsesionan las líneas limpias, las texturas y que cada
-            visita se sienta como un ritual.
+            Soy Moisés Sánchez, barbero venezolano. Empecé en 2010 en mi barrio en Barquisimeto y en 2017 me vine a Chile para
+            seguir cortando. Llevo todos estos años puliendo fades, barbas y perfiles con la misma obsesión: que te vayas con
+            confianza y con un estilo que hable de ti.
           </p>
           <p className="text-base leading-relaxed text-[#d8d0c0]">
-            El estudio está diseñado para ser tu refugio: luces bajas, detalles dorados, aroma a madera y playlists curadas. Todo
-            listo para que reserves en segundos y salgas con el look que te hace destacar.
+            El estudio en Santiago está pensado como refugio. Luces bajas, detalles dorados y aromas cálidos que recuerdan a mi
+            tierra. Aquí mezclo la técnica clásica que aprendí en Venezuela con las tendencias chilenas para darte un servicio
+            honesto, cercano y profesional.
+          </p>
+          <p className="text-base leading-relaxed text-[#d8d0c0]">
+            Mi motivación es sencilla: cada corte es una historia de migración, de resiliencia y de orgullo. Reservas en segundos,
+            atención puntual y resultados que te recuerden por qué vuelves.
           </p>
           <div className="flex flex-wrap gap-3 text-xs text-[#d4af37]">
             <span className="rounded-full border border-[#d4af37]/30 px-3 py-1">Cinzel + Lato</span>

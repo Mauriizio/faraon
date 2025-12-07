@@ -372,7 +372,7 @@ export default function ReservarPage() {
                 ))}
               </div>
 
-              <div className="grid grid-cols-7 gap-0.5 rounded-xl bg-[#0f0f0f] p-1.5 sm:gap-0.5 sm:p-2">
+              <div className="grid grid-cols-7 gap-1.5 rounded-xl bg-[#0f0f0f] p-2 sm:gap-1.5 sm:p-3">
                 {weeks.map((week, idx) => (
                   <div key={idx} className="contents">
                     {week.map((day, dayIdx) => {
@@ -398,24 +398,24 @@ export default function ReservarPage() {
                             setSelectedSlot(null);
                           }}
                           disabled={disabled}
-                          className={`group flex aspect-square min-h-[28px] w-full flex-col items-center justify-center gap-0.5 rounded-lg px-1 py-1 text-center text-[9px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${statusColor(
+                          className={`group flex aspect-square min-h-[36px] w-full flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-center text-[10px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${statusColor(
                             day.status,
                           )} ${
                             isActive
                               ? "shadow-[0_0_0_1px_rgba(212,175,55,0.6),0_6px_18px_rgba(0,0,0,0.25)]"
-                              : "shadow-[0_4px_14px_rgba(0,0,0,0.18)]"
-                          } ${disabled ? "opacity-70" : "hover:scale-[1.005]"}`}
+                              : "shadow-[0_6px_18px_rgba(0,0,0,0.25)]"
+                          } ${disabled ? "opacity-70" : "hover:translate-y-[-1px]"}`}
                           aria-label={`Día ${day.label} ${
                             day.status === "disponible"
                               ? "disponible"
                               : "no disponible"
                           }`}
                         >
-                          <span className="text-[10px] leading-none text-[#f7f1e3]">
+                          <span className="text-[11px] leading-none text-[#f7f1e3]">
                             {day.date.getDate().toString().padStart(2, "0")}
                           </span>
                           <span
-                            className={`rounded-full px-1 py-0.5 text-[8px] font-semibold leading-tight ${statusBadgeClasses(
+                            className={`rounded-full px-2 py-1 text-[9px] font-semibold leading-tight ${statusBadgeClasses(
                               day.status,
                             )}`}
                           >
