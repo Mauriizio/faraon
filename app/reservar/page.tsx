@@ -377,7 +377,7 @@ export default function ReservarPage() {
                           return (
                             <div
                               key={`empty-${idx}-${dayIdx}`}
-                              className="aspect-square rounded-xl"
+                              className="aspect-square rounded-lg"
                               aria-hidden
                             />
                           );
@@ -395,7 +395,7 @@ export default function ReservarPage() {
                               setSelectedSlot(null);
                             }}
                             disabled={disabled}
-                            className={`group flex aspect-square min-h-[70px] w-full flex-col items-center justify-between rounded-xl border border-[#d4af37]/25 bg-[#0c0c0c] px-2.5 py-2.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${statusColor(
+                            className={`group flex aspect-square min-h-[74px] w-full flex-col items-center justify-center gap-2 rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-2.5 py-2.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${statusColor(
                               day.status,
                             )} ${
                               isActive
@@ -412,7 +412,7 @@ export default function ReservarPage() {
                               {day.date.getDate().toString().padStart(2, "0")}
                             </span>
                             <span
-                              className={`inline-flex min-w-[42px] items-center justify-center rounded-lg px-2 py-1 text-[10px] font-semibold leading-tight ${statusBadgeClasses(
+                              className={`inline-flex min-w-[44px] items-center justify-center rounded-md px-2 py-1 text-[10px] font-semibold leading-tight ${statusBadgeClasses(
                                 day.status,
                               )}`}
                             >
