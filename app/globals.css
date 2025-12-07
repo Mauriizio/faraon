@@ -14,6 +14,8 @@
 :root {
   color: var(--color-sand);
   background-color: var(--color-ink);
+  --font-cinzel: "Cinzel", "Times New Roman", serif;
+  --font-lato: "Lato", "Helvetica Neue", Arial, sans-serif;
 }
 
 * {
