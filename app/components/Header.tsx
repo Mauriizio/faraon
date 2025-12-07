@@ -98,32 +98,41 @@ export function Header() {
 
       {/* NAV MOBILE */}
       <div
-        className={`md:hidden transition-[max-height,opacity] duration-300 ease-in-out ${
-          open ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
-        } overflow-hidden border-t border-[#d4af37]/15 bg-[#050505]/95 backdrop-blur-lg`}
+        className={`md:hidden ${open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"} fixed inset-0 z-40 transition-opacity duration-250`}
+        aria-hidden={!open}
       >
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 text-sm font-medium text-[#f7f1e3]">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="rounded-lg border border-transparent px-4 py-3 transition hover:border-[#d4af37]/40 hover:bg-[#0f0f0f]"
+        <div
+          className="absolute inset-0 bg-black/70 backdrop-blur-md"
+          onClick={() => setOpen(false)}
+        />
+        <div
+          className={`absolute left-0 right-0 top-24 mx-4 rounded-2xl border border-[#d4af37]/20 bg-[#050505]/95 shadow-[0_16px_40px_rgba(0,0,0,0.55)] transition-all duration-300 ${
+            open ? "translate-y-0" : "-translate-y-4"
+          }`}
+        >
+          <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 text-sm font-medium text-[#f7f1e3]">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-lg border border-transparent px-4 py-3 transition hover:border-[#d4af37]/40 hover:bg-[#0f0f0f]"
+                onClick={() => setOpen(false)}
+              >
+                <div className="flex items-center justify-between">
+                  <span>{item.label}</span>
+                  <span className="text-xs text-[#d4af37]">→</span>
+                </div>
+              </Link>
+            ))}
+            {/* CTA principal también en mobile */}
+            <CTAButton
+              href="/reservar"
+              className="w-full justify-center"
               onClick={() => setOpen(false)}
             >
-              <div className="flex items-center justify-between">
-                <span>{item.label}</span>
-                <span className="text-xs text-[#d4af37]">→</span>
-              </div>
-            </Link>
-          ))}
-          {/* CTA principal también en mobile */}
-          <CTAButton
-            href="/reservar"
-            className="w-full justify-center"
-            onClick={() => setOpen(false)}
-          >
-            Reservar ahora
-          </CTAButton>
+              Reservar ahora
+            </CTAButton>
+          </div>
         </div>
       </div>
     </header>

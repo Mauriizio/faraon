@@ -14,30 +14,92 @@ type GalleryItem = {
   tag: string;
 };
 
-const galleryItems: GalleryItem[] = Array.from({ length: 14 }, (_, index) => {
-  const number = index + 1;
-
-  // En tu carpeta: 1, 2, 13 y 14 están como .JPG (mayúsculas)
-  const isUppercase = [1, 2, 13, 14].includes(number);
-  const extension = isUppercase ? "JPG" : "jpg";
-
-  return {
-    id: `pic-${number}`,
-    src: `/catalog/pic-${number}.${extension}`,
-    look:
-      number % 3 === 0
-        ? "Fade + Beard"
-        : number % 2 === 0
-          ? "Classic Cut"
-          : "Full Service",
-    tag:
-      number % 3 === 0
-        ? "Detalles"
-        : number % 2 === 0
-          ? "Texturas"
-          : "Degradados",
-  };
-});
+const galleryItems: GalleryItem[] = [
+  {
+    id: "pic-1",
+    src: "/catalog/pic-1.JPG",
+    look: "Full service: degradado + barba",
+    tag: "Corte + barba",
+  },
+  {
+    id: "pic-2",
+    src: "/catalog/pic-2.JPG",
+    look: "Corte clásico adulto",
+    tag: "Corte clásico",
+  },
+  {
+    id: "pic-3",
+    src: "/catalog/pic-3.jpg",
+    look: "Perfilado y cuidado de barba",
+    tag: "Barba",
+  },
+  {
+    id: "pic-4",
+    src: "/catalog/pic-4.jpg",
+    look: "Degradado limpio + contornos",
+    tag: "Corte degradados",
+  },
+  {
+    id: "pic-5",
+    src: "/catalog/pic-5.jpg",
+    look: "Corte para niños clásico",
+    tag: "Kids",
+  },
+  {
+    id: "pic-6",
+    src: "/catalog/pic-6.jpg",
+    look: "Tinte y matiz controlado",
+    tag: "Tinte",
+  },
+  {
+    id: "pic-7",
+    src: "/catalog/pic-7.jpg",
+    look: "Afeitado completo con toalla",
+    tag: "Afeitado",
+  },
+  {
+    id: "pic-8",
+    src: "/catalog/pic-8.jpg",
+    look: "Visos platinados",
+    tag: "Color",
+  },
+  {
+    id: "pic-9",
+    src: "/catalog/pic-9.jpg",
+    look: "Corte con tijeras y textura",
+    tag: "Tijeras",
+  },
+  {
+    id: "pic-10",
+    src: "/catalog/pic-10.jpg",
+    look: "Pigmentación de barba",
+    tag: "Pigmento",
+  },
+  {
+    id: "pic-11",
+    src: "/catalog/pic-11.jpg",
+    look: "Afeitado y ritual clásico",
+    tag: "Ritual",
+  },
+  {
+    id: "pic-12",
+    src: "/catalog/pic-12.jpg",
+    look: "Alisado permanente keratina",
+    tag: "Alisado",
+  },
+  {
+    id: "pic-13",
+    src: "/catalog/pic-13.JPG",
+    look: "Corte degradado full servicio + barba pigmentada",
+    tag: "Full servicio",
+  },
+  {
+    id: "pic-14",
+    src: "/catalog/pic-14.JPG",
+    look: "Ondulación permanente",
+    tag: "Ondas",
+  },
+];
 
 function GalleryCard({ item }: { item: GalleryItem }) {
   const [hasError, setHasError] = useState(false);

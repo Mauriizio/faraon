@@ -102,11 +102,11 @@ a {
 
 .hero-grid {
   position: relative;
-  background: radial-gradient(circle at 60% 40%, rgba(212, 175, 55, 0.15), transparent 40%),
-    radial-gradient(circle at 20% 80%, rgba(74, 31, 47, 0.25), transparent 35%),
-    linear-gradient(145deg, rgba(27, 27, 27, 0.75), rgba(0, 0, 0, 0.8));
+  background: radial-gradient(circle at 60% 40%, rgba(212, 175, 55, 0.14), transparent 38%),
+    radial-gradient(circle at 20% 80%, rgba(74, 31, 47, 0.22), transparent 32%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.4), rgba(247, 244, 236, 0.9));
   border: 1px solid rgba(212, 175, 55, 0.3);
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
 }
 
 .hero-shell {
@@ -117,7 +117,7 @@ a {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.75) 35%, rgba(0, 0, 0, 0.6) 65%, rgba(0, 0, 0, 0.9) 100%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.35) 0%, rgba(247, 244, 236, 0.55) 40%, rgba(247, 244, 236, 0.4) 60%, rgba(255, 255, 255, 0.28) 100%);
 }
 
 .hero-stripes::before,
@@ -128,8 +128,8 @@ a {
   width: 42px;
   height: 84%;
   background-image: repeating-linear-gradient(135deg, #c1121f 0, #c1121f 10px, #ffffff 10px, #ffffff 20px, #1f3c88 20px, #1f3c88 30px);
-  opacity: 0.28;
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
+  opacity: 0.45;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.25));
 }
 
 .hero-stripes::before {
@@ -138,6 +138,34 @@ a {
 
 .hero-stripes::after {
   right: max(1rem, 5vw);
+}
+
+.hero-poles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-poles::before,
+.hero-poles::after {
+  content: "";
+  position: absolute;
+  top: 14%;
+  width: 38px;
+  height: 72%;
+  background-image: repeating-linear-gradient(135deg, #c1121f 0, #c1121f 9px, #ffffff 9px, #ffffff 18px, #1f3c88 18px, #1f3c88 27px);
+  border: 2px solid #1b1b1b;
+  border-radius: 999px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+  opacity: 0.85;
+}
+
+.hero-poles::before {
+  left: -18px;
+}
+
+.hero-poles::after {
+  right: -18px;
 }
 
 .section-title {
