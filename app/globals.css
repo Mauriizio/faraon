@@ -151,7 +151,7 @@ a {
   border-radius: 999px;
   box-shadow: 0 18px 32px rgba(0, 0, 0, 0.18);
   opacity: 0.6;
-  animation: barber-roll 1.8s linear infinite;
+  animation: barber-roll 5.4s linear infinite;
   transition: opacity 220ms ease;
   pointer-events: auto;
 }
@@ -196,7 +196,7 @@ a {
     background-position: 0 0;
   }
   100% {
-    background-position: 0 112px;
+    background-position: 0 336px;
   }
 }
 
