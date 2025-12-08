@@ -136,23 +136,23 @@ a {
   top: -6%;
   width: clamp(52px, 7vw, 76px);
   height: 114%;
-  background-image: repeating-linear-gradient(
+  background-image: linear-gradient(
     135deg,
-    #c1121f 0px,
-    #c1121f 26px,
-    #ffffff 26px,
-    #ffffff 52px,
-    #1f3c88 52px,
-    #1f3c88 78px,
-    #ffffff 78px,
-    #ffffff 104px
+    #c1121f 0%,
+    #c1121f 25%,
+    #ffffff 25%,
+    #ffffff 50%,
+    #1f3c88 50%,
+    #1f3c88 75%,
+    #ffffff 75%,
+    #ffffff 100%
   );
-  background-size: 120px 160px;
+  background-size: 120px 120px;
   background-repeat: repeat;
   border-radius: 999px;
   box-shadow: 0 18px 32px rgba(0, 0, 0, 0.18);
   opacity: 0.6;
-  animation: barber-roll 3.6s linear infinite;
+  animation: barber-roll 2.6s linear infinite;
   transition: opacity 220ms ease;
   pointer-events: auto;
 }
@@ -197,7 +197,7 @@ a {
     background-position: 0 0;
   }
   100% {
-    background-position: 0 160px;
+    background-position: 0 120px;
   }
 }
 
