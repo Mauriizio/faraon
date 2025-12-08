@@ -274,8 +274,8 @@ export default function ReservarPage() {
       titleClassName="mx-auto max-w-5xl text-pretty text-lg sm:text-xl lg:text-[22px] lg:leading-[1.2]"
       descriptionClassName="mx-auto max-w-3xl text-[11px] sm:text-sm"
     >
-      <div className="mx-auto grid w-full max-w-7xl items-start gap-2 sm:gap-3 lg:grid-cols-[1.2fr_0.8fr] xl:max-w-[1520px]">
-        <div className="glass-panel panel-hover flex min-w-0 flex-col gap-2 rounded-2xl p-2.5 sm:p-3">
+      <div className="mx-auto grid w-full max-w-7xl items-start gap-2 sm:gap-3 lg:grid-cols-[1.28fr_0.82fr] lg:items-stretch xl:max-w-[1520px]">
+        <div className="glass-panel panel-hover flex min-w-0 flex-col gap-2 rounded-2xl p-2.5 sm:p-3 lg:h-full">
           <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
             <div>
               <p className="small-caps text-[10px] text-[#d4af37]">
@@ -305,8 +305,8 @@ export default function ReservarPage() {
             </span>
           </div>
 
-          <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-[1fr_0.9fr] sm:items-start lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="mx-auto w-full max-w-[860px] rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-2.5 sm:p-3 lg:max-w-none lg:p-3.5">
+          <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-[1fr_0.9fr] sm:items-start lg:grid-cols-[1.14fr_0.86fr] lg:items-stretch">
+            <div className="mx-auto w-full max-w-[860px] rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-2.5 sm:p-3 lg:max-w-none lg:h-full lg:p-3.5">
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
                   <div>
@@ -361,7 +361,7 @@ export default function ReservarPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-7 gap-1.5 text-center text-[11px] font-semibold uppercase tracking-wide text-[#d8d0c0] sm:gap-2">
+                <div className="grid grid-cols-7 gap-1.5 text-center text-[11px] font-semibold uppercase tracking-wide text-[#d8d0c0] sm:gap-2 lg:gap-2.5">
                   {weekDayLabels.map((label) => (
                     <span key={label} className="py-1">
                       {label}
@@ -395,7 +395,7 @@ export default function ReservarPage() {
                               setSelectedSlot(null);
                             }}
                             disabled={disabled}
-                            className={`group relative flex aspect-square w-full min-h-[56px] flex-col items-center justify-center gap-1 overflow-hidden rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-1.5 py-1.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] sm:min-h-[64px] sm:px-2 sm:py-2 lg:min-h-0 lg:gap-1.5 lg:px-2.5 lg:py-2.5 lg:text-[12px] ${statusColor(
+                            className={`group relative flex aspect-square w-full min-h-[56px] flex-col items-center justify-center gap-1 overflow-hidden rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-1.5 py-1.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] sm:min-h-[64px] sm:px-2 sm:py-2 lg:min-h-[72px] lg:gap-2 lg:px-3 lg:py-3 lg:text-[13px] ${statusColor(
                               day.status,
                             )} ${
                               isActive
@@ -408,11 +408,11 @@ export default function ReservarPage() {
                                 : "no disponible"
                             }`}
                           >
-                            <span className="text-[13px] leading-none text-[#f7f1e3] sm:text-sm lg:text-[15px]">
+                            <span className="text-[13px] leading-none text-[#f7f1e3] sm:text-sm lg:text-[16px]">
                               {day.date.getDate().toString().padStart(2, "0")}
                             </span>
                             <span
-                              className={`inline-flex w-full items-center justify-center rounded-md px-2 py-0.5 text-[10px] font-semibold leading-tight sm:py-1 ${statusBadgeClasses(
+                              className={`inline-flex w-full items-center justify-center rounded-md px-2 py-0.5 text-[10px] font-semibold leading-tight sm:py-1 lg:text-[11px] ${statusBadgeClasses(
                                 day.status,
                               )}`}
                             >
@@ -431,7 +431,7 @@ export default function ReservarPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#0b0b0b]/80 p-2.5 sm:p-3 max-w-[560px] w-full mx-auto h-full lg:max-w-[620px] lg:p-3.5 lg:self-stretch lg:min-h-[520px]">
+            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#0b0b0b]/80 p-2.5 sm:p-3 max-w-[560px] w-full mx-auto h-full lg:max-w-[620px] lg:p-3.5 lg:h-full lg:self-stretch lg:min-h-0">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="text-sm font-semibold text-[#f7f1e3]">
                   Horarios del día
@@ -472,7 +472,7 @@ export default function ReservarPage() {
 
         <form
           onSubmit={handleSubmit}
-          className="glass-panel panel-hover mx-auto flex w-full max-w-[520px] min-w-0 flex-col gap-2 rounded-2xl p-3 lg:max-w-[600px] lg:self-stretch lg:p-3.5"
+          className="glass-panel panel-hover mx-auto flex w-full max-w-[520px] min-w-0 flex-col gap-2 rounded-2xl p-3 lg:max-w-[600px] lg:h-full lg:self-stretch lg:p-3.5"
         >
           <div className="text-center">
             <p className="small-caps text-[10px] text-[#d4af37]">Confirmación</p>
