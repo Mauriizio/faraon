@@ -268,13 +268,13 @@ export default function ReservarPage() {
       eyebrow="Reserva principal"
       title="Agenda profesional con disponibilidad en vivo"
       description="Calendario compacto con cupos reales y confirmación inmediata."
-      className="pt-3 pb-5 sm:pt-4 sm:pb-7"
+      className="pt-2.5 pb-4 sm:pt-3.5 sm:pb-6"
       headerClassName="items-center text-center lg:w-full"
       headerWidthClassName="w-full"
       titleClassName="mx-auto max-w-5xl text-pretty text-lg sm:text-xl lg:text-[22px] lg:leading-[1.2]"
       descriptionClassName="mx-auto max-w-3xl text-[11px] sm:text-sm"
     >
-      <div className="mx-auto grid w-full max-w-5xl items-start gap-2 sm:gap-3 lg:grid-cols-[1.05fr_0.95fr]">
+      <div className="mx-auto grid w-full max-w-6xl items-start gap-2 sm:gap-3 lg:grid-cols-[1.08fr_0.92fr]">
         <div className="glass-panel panel-hover flex min-w-0 flex-col gap-2 rounded-2xl p-2.5 sm:p-3">
           <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
             <div>
@@ -306,7 +306,7 @@ export default function ReservarPage() {
           </div>
 
           <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-[1fr_0.9fr] sm:items-start">
-            <div className="mx-auto w-full max-w-[620px] rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-2.5 sm:p-3">
+            <div className="mx-auto w-full max-w-[760px] rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-2.5 sm:p-3 lg:max-w-[820px]">
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
                   <div>
@@ -369,7 +369,7 @@ export default function ReservarPage() {
                   ))}
                 </div>
 
-                <div className="grid grid-cols-7 gap-2 rounded-xl bg-[#0f0f0f] p-2.5 sm:gap-2.5 sm:p-3.5">
+                <div className="grid grid-cols-7 gap-2 rounded-xl bg-[#0f0f0f] p-2 sm:gap-2.5 sm:p-3">
                   {weeks.map((week, idx) => (
                     <div key={idx} className="contents">
                       {week.map((day, dayIdx) => {
@@ -395,7 +395,7 @@ export default function ReservarPage() {
                               setSelectedSlot(null);
                             }}
                             disabled={disabled}
-                            className={`group relative flex aspect-square min-h-[70px] w-full flex-col items-center justify-center gap-1.5 overflow-hidden rounded-xl border border-[#d4af37]/25 bg-[#0c0c0c] px-2 py-2 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${statusColor(
+                            className={`group relative flex aspect-square w-full flex-col items-center justify-center gap-1 overflow-hidden rounded-xl border border-[#d4af37]/25 bg-[#0c0c0c] px-2 py-2 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${statusColor(
                               day.status,
                             )} ${
                               isActive
