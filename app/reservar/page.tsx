@@ -306,7 +306,7 @@ export default function ReservarPage() {
           </div>
 
           <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-[1fr_0.9fr] sm:items-start">
-            <div className="mx-auto w-full max-w-[820px] rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-2.5 sm:p-3 lg:max-w-[900px]">
+            <div className="mx-auto w-full max-w-[820px] rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-2.5 sm:p-3 lg:max-w-[880px] xl:max-w-[940px]">
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
                   <div>
@@ -369,7 +369,7 @@ export default function ReservarPage() {
                   ))}
                 </div>
 
-                <div className="grid grid-cols-7 gap-1.5 rounded-xl bg-[#0f0f0f] p-2 sm:gap-2.5 sm:p-3">
+                <div className="grid grid-cols-7 gap-1.5 rounded-xl bg-[#0f0f0f] p-2 sm:gap-2.5 sm:p-3 lg:gap-2">
                   {weeks.map((week, idx) => (
                     <div key={idx} className="contents">
                       {week.map((day, dayIdx) => {
@@ -395,7 +395,7 @@ export default function ReservarPage() {
                               setSelectedSlot(null);
                             }}
                             disabled={disabled}
-                            className={`group relative flex aspect-square w-full min-h-[56px] flex-col items-center justify-center gap-1 overflow-hidden rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-1.5 py-1.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] sm:min-h-[64px] sm:px-2 sm:py-2 ${statusColor(
+                            className={`group relative flex aspect-square w-full min-h-[56px] flex-col items-center justify-center gap-1 overflow-hidden rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-1.5 py-1.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] sm:min-h-[64px] sm:px-2 sm:py-2 lg:min-h-0 lg:px-1.5 lg:py-1.5 ${statusColor(
                               day.status,
                             )} ${
                               isActive
@@ -472,7 +472,7 @@ export default function ReservarPage() {
 
         <form
           onSubmit={handleSubmit}
-          className="glass-panel panel-hover mx-auto flex w-full max-w-[520px] min-w-0 flex-col gap-2 rounded-2xl p-3 lg:h-full"
+          className="glass-panel panel-hover mx-auto flex w-full max-w-[520px] min-w-0 flex-col gap-2 rounded-2xl p-3"
         >
           <div className="text-center">
             <p className="small-caps text-[10px] text-[#d4af37]">Confirmación</p>
