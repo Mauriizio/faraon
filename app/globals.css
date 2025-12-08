@@ -133,8 +133,8 @@ a {
   content: "";
   position: absolute;
   top: -5%;
-  width: clamp(30px, 6vw, 44px);
-  height: 116%;
+  width: clamp(32px, 5.2vw, 46px);
+  height: 112%;
   background-image: repeating-linear-gradient(
     135deg,
     #c1121f 0 18px,
@@ -147,25 +147,34 @@ a {
   border: 1.6px solid #c9b57c;
   border-radius: 999px;
   box-shadow: 0 18px 32px rgba(0, 0, 0, 0.18);
-  opacity: 0.72;
+  opacity: 0.62;
   animation: barber-roll 11s linear infinite;
+  transition: opacity 220ms ease;
+  pointer-events: auto;
 }
 
 .hero-poles::before {
-  left: clamp(-72px, -6vw, -32px);
+  left: clamp(-52px, -4.5vw, -24px);
 }
 
 .hero-poles::after {
-  right: clamp(-72px, -6vw, -32px);
+  right: clamp(-52px, -4.5vw, -24px);
   animation-direction: reverse;
+}
+
+.hero-poles::before:hover,
+.hero-poles::after:hover,
+.hero-poles::before:active,
+.hero-poles::after:active {
+  opacity: 1;
 }
 
 @media (max-width: 768px) {
   .hero-poles::before,
   .hero-poles::after {
     width: clamp(22px, 5vw, 30px);
-    height: 110%;
-    opacity: 0.58;
+    height: 106%;
+    opacity: 0.5;
   }
 }
 
