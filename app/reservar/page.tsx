@@ -306,7 +306,7 @@ export default function ReservarPage() {
           </div>
 
           <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-[1fr_0.9fr] sm:items-start">
-            <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-2.5 sm:p-3 w-full mx-auto">
+            <div className="mx-auto w-full max-w-[620px] rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-2.5 sm:p-3">
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
                   <div>
@@ -369,7 +369,7 @@ export default function ReservarPage() {
                   ))}
                 </div>
 
-                <div className="grid grid-cols-7 gap-2.5 rounded-xl bg-[#0f0f0f] p-3 sm:gap-3 sm:p-4">
+                <div className="grid grid-cols-7 gap-2 rounded-xl bg-[#0f0f0f] p-2.5 sm:gap-2.5 sm:p-3.5">
                   {weeks.map((week, idx) => (
                     <div key={idx} className="contents">
                       {week.map((day, dayIdx) => {
@@ -395,7 +395,7 @@ export default function ReservarPage() {
                               setSelectedSlot(null);
                             }}
                             disabled={disabled}
-                            className={`group flex aspect-square min-h-[74px] w-full flex-col items-center justify-center gap-2 rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-2.5 py-2.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${statusColor(
+                            className={`group relative flex aspect-square min-h-[70px] w-full flex-col items-center justify-center gap-1.5 overflow-hidden rounded-xl border border-[#d4af37]/25 bg-[#0c0c0c] px-2 py-2 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${statusColor(
                               day.status,
                             )} ${
                               isActive
@@ -412,7 +412,7 @@ export default function ReservarPage() {
                               {day.date.getDate().toString().padStart(2, "0")}
                             </span>
                             <span
-                              className={`inline-flex min-w-[44px] items-center justify-center rounded-md px-2 py-1 text-[10px] font-semibold leading-tight ${statusBadgeClasses(
+                              className={`inline-flex w-full items-center justify-center rounded-[10px] px-2 py-1 text-[10px] font-semibold leading-tight ${statusBadgeClasses(
                                 day.status,
                               )}`}
                             >
