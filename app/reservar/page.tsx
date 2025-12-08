@@ -395,7 +395,7 @@ export default function ReservarPage() {
                               setSelectedSlot(null);
                             }}
                             disabled={disabled}
-                            className={`group relative flex aspect-square w-full flex-col items-center justify-center gap-1.5 overflow-hidden rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-2 py-2 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] sm:gap-2 sm:px-2.5 sm:py-2.5 lg:gap-2.5 lg:px-3 lg:py-3 lg:text-[13px] ${statusColor(
+                            className={`group relative flex aspect-square w-full flex-col items-center justify-center gap-1 overflow-hidden rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-1.5 py-1.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] sm:gap-1.5 sm:px-2 sm:py-2 lg:gap-1.5 lg:px-2.5 lg:py-2.5 lg:text-[12px] ${statusColor(
                               day.status,
                             )} ${
                               isActive
@@ -408,11 +408,11 @@ export default function ReservarPage() {
                                 : "no disponible"
                             }`}
                           >
-                            <span className="text-[13px] leading-none text-[#f7f1e3] sm:text-sm lg:text-[15px]">
+                            <span className="text-[12px] leading-none text-[#f7f1e3] sm:text-[13px] lg:text-[14px]">
                               {day.date.getDate().toString().padStart(2, "0")}
                             </span>
                             <span
-                              className={`inline-flex w-full items-center justify-center rounded-md px-2 py-0.5 text-[10px] font-semibold leading-tight sm:py-1 lg:text-[11px] ${statusBadgeClasses(
+                              className={`inline-flex w-full items-center justify-center rounded-md px-1.5 py-0.5 text-[9px] font-semibold leading-tight sm:px-2 sm:text-[10px] lg:text-[10px] ${statusBadgeClasses(
                                 day.status,
                               )}`}
                             >
