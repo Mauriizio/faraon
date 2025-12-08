@@ -112,16 +112,6 @@ function buildDayAvailability(
   };
 }
 
-function statusBadgeClasses(status: AvailabilityStatus) {
-  if (status === "disponible") {
-    return "rounded-md bg-emerald-500/18 text-emerald-200 ring-1 ring-emerald-500/40";
-  }
-  if (status === "sin-cupos") {
-    return "rounded-md bg-amber-500/18 text-amber-100 ring-1 ring-amber-500/40";
-  }
-  return "rounded-md bg-rose-700/30 text-rose-100 ring-1 ring-rose-700/60";
-}
-
 function statusColor(status: AvailabilityStatus) {
   if (status === "disponible") {
     return "bg-emerald-500/20 text-emerald-100 ring-1 ring-emerald-500/40";
@@ -395,7 +385,7 @@ export default function ReservarPage() {
                               setSelectedSlot(null);
                             }}
                             disabled={disabled}
-                            className={`group relative flex aspect-square w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-2 py-2 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] sm:px-2.5 sm:py-2.5 lg:px-4 lg:py-4 lg:text-[13px] ${statusColor(
+                            className={`group relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-2 py-2 text-center text-[13px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] sm:px-2.5 sm:py-2.5 sm:text-[14px] lg:px-4 lg:py-4 lg:text-[17px] ${statusColor(
                               day.status,
                             )} ${
                               isActive
@@ -408,19 +398,8 @@ export default function ReservarPage() {
                                 : "no disponible"
                             }`}
                           >
-                            <span className="text-[13px] leading-none text-[#f7f1e3] sm:text-[14px] lg:text-[16px]">
+                            <span className="leading-none text-[#f7f1e3]">
                               {day.date.getDate().toString().padStart(2, "0")}
-                            </span>
-                            <span
-                              className={`inline-flex w-full items-center justify-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold leading-tight sm:px-2 sm:text-[11px] lg:text-[11px] ${statusBadgeClasses(
-                                day.status,
-                              )}`}
-                            >
-                              {day.status === "disponible"
-                                ? day.availableSlots.length
-                                : day.status === "⛔"
-                                  ? "⛔"
-                                  : "Full"}
                             </span>
                           </button>
                         );
