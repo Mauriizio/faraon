@@ -274,7 +274,7 @@ export default function ReservarPage() {
       titleClassName="mx-auto max-w-5xl text-pretty text-lg sm:text-xl lg:text-[22px] lg:leading-[1.2]"
       descriptionClassName="mx-auto max-w-3xl text-[11px] sm:text-sm"
     >
-      <div className="mx-auto grid w-full max-w-7xl items-start gap-2 sm:gap-3 lg:grid-cols-[1.15fr_0.85fr] xl:max-w-[1500px]">
+      <div className="mx-auto grid w-full max-w-7xl items-start gap-2 sm:gap-3 lg:grid-cols-[1.2fr_0.8fr] xl:max-w-[1520px]">
         <div className="glass-panel panel-hover flex min-w-0 flex-col gap-2 rounded-2xl p-2.5 sm:p-3">
           <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
             <div>
@@ -369,7 +369,7 @@ export default function ReservarPage() {
                   ))}
                 </div>
 
-                <div className="grid grid-cols-7 gap-1.5 rounded-xl bg-[#0f0f0f] p-2 sm:gap-2.5 sm:p-3 lg:gap-[10px] lg:p-3.5">
+                <div className="grid grid-cols-7 gap-1.5 rounded-xl bg-[#0f0f0f] p-2 sm:gap-2.5 sm:p-3 lg:gap-2.5 lg:p-3.5">
                   {weeks.map((week, idx) => (
                     <div key={idx} className="contents">
                       {week.map((day, dayIdx) => {
@@ -395,7 +395,7 @@ export default function ReservarPage() {
                               setSelectedSlot(null);
                             }}
                             disabled={disabled}
-                            className={`group relative flex aspect-square w-full min-h-[56px] flex-col items-center justify-center gap-1 overflow-hidden rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-1.5 py-1.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] sm:min-h-[64px] sm:px-2 sm:py-2 lg:min-h-[82px] lg:gap-1.5 lg:px-2 lg:py-2 lg:text-[12px] ${statusColor(
+                            className={`group relative flex aspect-square w-full min-h-[56px] flex-col items-center justify-center gap-1 overflow-hidden rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-1.5 py-1.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] sm:min-h-[64px] sm:px-2 sm:py-2 lg:min-h-0 lg:gap-1.5 lg:px-2.5 lg:py-2.5 lg:text-[12px] ${statusColor(
                               day.status,
                             )} ${
                               isActive
@@ -431,7 +431,7 @@ export default function ReservarPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#0b0b0b]/80 p-2.5 sm:p-3 max-w-[560px] w-full mx-auto h-full lg:max-w-[620px] lg:p-3.5 lg:self-stretch lg:min-h-[540px]">
+            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#0b0b0b]/80 p-2.5 sm:p-3 max-w-[560px] w-full mx-auto h-full lg:max-w-[620px] lg:p-3.5 lg:self-stretch lg:min-h-[520px]">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="text-sm font-semibold text-[#f7f1e3]">
                   Horarios del día
