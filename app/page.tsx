@@ -86,31 +86,35 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="glass-panel panel-hover flex flex-col gap-4 rounded-3xl p-6">
-            <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="glass-panel panel-hover flex flex-col gap-4 rounded-3xl p-5 sm:p-6">
+            <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
               <div>
                 <p className="small-caps text-[11px] text-[#d4af37]">Disponibilidad demo</p>
                 <p className="section-title text-xl font-semibold text-[#f7f1e3]">Calendario con más espacio</p>
               </div>
-              <CTAButton href="/reservar" variant="ghost" className="w-full justify-center sm:w-auto">
+              <CTAButton
+                href="/reservar"
+                variant="ghost"
+                className="w-full justify-center px-4 py-2.5 text-[13px] sm:w-auto sm:px-6 sm:py-3 sm:text-sm"
+              >
                 Abrir reservas
               </CTAButton>
             </div>
-            <div className="overflow-x-auto">
-              <div className="min-w-[480px] space-y-3">
-                <div className="grid grid-cols-7 gap-2 text-center text-[11px] font-semibold uppercase tracking-wide text-[#d8d0c0]">
+            <div className="w-full overflow-hidden">
+              <div className="space-y-2.5 sm:space-y-3">
+                <div className="grid grid-cols-7 gap-1.5 text-center text-[10px] font-semibold uppercase tracking-wide text-[#d8d0c0] sm:gap-2 sm:text-[11px]">
                   {["D", "L", "M", "X", "J", "V", "S"].map((label) => (
                     <span key={label} className="py-1">
                       {label}
                     </span>
                   ))}
                 </div>
-                <div className="grid grid-cols-7 gap-2.5 rounded-2xl border border-[#d4af37]/25 bg-[#0f0f0f]/80 p-3.5 shadow-[0_10px_28px_rgba(0,0,0,0.4)] sm:p-4">
+                <div className="grid grid-cols-7 gap-1.5 rounded-2xl border border-[#d4af37]/25 bg-[#0f0f0f]/80 p-2.5 shadow-[0_10px_28px_rgba(0,0,0,0.4)] sm:gap-2.5 sm:p-3.5">
                   {calendarPreview.flat().map((cell, index) => {
                     const statusClasses = {
-                      disponible: "bg-emerald-500/15 text-emerald-50 ring-1 ring-emerald-500/40",
-                      full: "bg-amber-500/15 text-amber-50 ring-1 ring-amber-500/40",
-                      feriado: "bg-rose-700/35 text-rose-50 ring-1 ring-rose-600/60",
+                      disponible: "bg-emerald-500/12 text-emerald-50 ring-1 ring-emerald-500/35",
+                      full: "bg-amber-500/12 text-amber-50 ring-1 ring-amber-500/35",
+                      feriado: "bg-rose-700/30 text-rose-50 ring-1 ring-rose-600/55",
                     }[cell.status];
 
                     const countLabel = cell.status === "disponible" ? cell.slots : cell.status === "feriado" ? "⛔" : "Full";
@@ -118,10 +122,10 @@ export default function HomePage() {
                     return (
                       <div
                         key={`${cell.day}-${index}`}
-                        className={`flex aspect-square min-h-[56px] min-w-[56px] flex-col items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-black/70 via-[#0f0f0f] to-black/60 px-3 py-3 text-center text-[11px] font-semibold text-[#f7f1e3] shadow-[0_10px_20px_rgba(0,0,0,0.35)] ${statusClasses}`}
+                        className={`flex aspect-square min-h-[44px] min-w-0 flex-col items-center justify-center gap-1.5 rounded-xl bg-gradient-to-b from-black/70 via-[#0f0f0f] to-black/60 px-1.5 py-1.5 text-center text-[10px] font-semibold text-[#f7f1e3] shadow-[0_10px_18px_rgba(0,0,0,0.3)] sm:min-h-[54px] sm:rounded-2xl sm:px-2.5 sm:py-2.5 sm:text-[11px] ${statusClasses}`}
                       >
-                        <span className="text-base leading-none">{cell.day}</span>
-                        <span className="rounded-full px-2.5 py-1 text-[10px] leading-none bg-black/30 ring-1 ring-inset ring-white/10">
+                        <span className="text-sm leading-none sm:text-base">{cell.day}</span>
+                        <span className="rounded-full bg-black/30 px-2 py-0.5 text-[9px] leading-none ring-1 ring-inset ring-white/10 sm:px-2.5 sm:py-1 sm:text-[10px]">
                           {countLabel}
                         </span>
                       </div>
@@ -173,7 +177,7 @@ export default function HomePage() {
         title="Reserva directa en la sección de agenda"
         description="Abre la agenda dedicada para ver disponibilidad en vivo, seleccionar servicios y confirmar tus datos con el calendario amplio."
       >
-        <div className="glass-panel panel-hover flex flex-col gap-4 rounded-2xl p-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="glass-panel panel-hover flex flex-col gap-4 rounded-2xl p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
           <div className="space-y-2 text-left">
             <p className="section-title text-2xl font-semibold text-[#f7f1e3]">Agenda completa en Reservas</p>
             <p className="text-sm leading-relaxed text-[#d8d0c0]">
@@ -181,10 +185,17 @@ export default function HomePage() {
             </p>
           </div>
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-            <CTAButton href="/reservar" className="w-full justify-center sm:w-auto">
+            <CTAButton
+              href="/reservar"
+              className="w-full justify-center px-4 py-2.5 text-[13px] sm:w-auto sm:px-6 sm:py-3 sm:text-sm"
+            >
               Ir a Reservas
             </CTAButton>
-            <CTAButton href="/servicios" variant="ghost" className="w-full justify-center sm:w-auto">
+            <CTAButton
+              href="/servicios"
+              variant="ghost"
+              className="w-full justify-center px-4 py-2.5 text-[13px] sm:w-auto sm:px-6 sm:py-3 sm:text-sm"
+            >
               Ver servicios
             </CTAButton>
           </div>
