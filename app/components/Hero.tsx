@@ -3,7 +3,7 @@ import { CTAButton } from "./CTAButton";
 
 export function Hero() {
   return (
-    <section className="hero-shell relative flex min-h-[78vh] items-center justify-center overflow-hidden bg-[#0b0a08] px-4 pb-10 pt-10 text-[#f7f1e3] sm:pt-14 lg:min-h-[76vh] lg:px-10 lg:pb-12 lg:pt-[60px]">
+    <section className="hero-shell relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0b0a08] px-4 pb-10 pt-10 text-[#f7f1e3] sm:pt-14 lg:min-h-screen lg:px-10 lg:pb-12 lg:pt-[60px]">
       <div className="hero-backdrop" aria-hidden />
       <div className="hero-stripes" aria-hidden />
       <div className="hero-poles" aria-hidden />
@@ -11,10 +11,10 @@ export function Hero() {
       <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center gap-6 text-center sm:gap-7 lg:max-w-6xl">
         <div className="fade-up relative flex items-center justify-center">
           <div className="absolute inset-[-12%] rounded-full bg-[radial-gradient(circle,_rgba(237,223,186,0.28),_transparent_62%)] blur-2xl" aria-hidden />
-          <div className="relative flex h-[264px] w-[264px] items-center justify-center rounded-full bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.9)_0%,_rgba(244,214,156,0.6)_44%,_rgba(17,14,12,0.95)_78%)] p-3 shadow-[0_18px_42px_rgba(0,0,0,0.42)] ring-1 ring-[#d4af37]/70 sm:h-[284px] sm:w-[284px] lg:h-[298px] lg:w-[298px]">
+          <div className="relative flex h-[272px] w-[272px] items-center justify-center rounded-full bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.92)_0%,_rgba(244,214,156,0.6)_46%,_rgba(17,14,12,0.95)_78%)] p-4 shadow-[0_18px_42px_rgba(0,0,0,0.42)] ring-1 ring-[#d4af37]/70 sm:h-[292px] sm:w-[292px] lg:h-[306px] lg:w-[306px]">
             <div className="absolute inset-3 rounded-full border border-[#d4af37]/48" aria-hidden />
-            <div className="absolute inset-1.5 rounded-full bg-[radial-gradient(circle,_rgba(255,255,255,0.88)_0%,_rgba(240,215,165,0.52)_42%,_rgba(0,0,0,0)_70%)]" aria-hidden />
-            <div className="absolute inset-[10%] rounded-full bg-white/88 shadow-[0_14px_28px_rgba(0,0,0,0.24)]" aria-hidden />
+            <div className="absolute inset-1.5 rounded-full bg-[radial-gradient(circle,_rgba(255,255,255,0.88)_0%,_rgba(240,215,165,0.52)_44%,_rgba(0,0,0,0)_70%)]" aria-hidden />
+            <div className="absolute inset-[7%] rounded-full bg-white/90 shadow-[0_14px_28px_rgba(0,0,0,0.24)]" aria-hidden />
             <Image
               src="/logo.png"
               alt="Logotipo Faraón Barber"
@@ -27,11 +27,11 @@ export function Hero() {
         </div>
 
         <div className="fade-up flex flex-col items-center gap-4">
-          <div className="flex flex-wrap items-center justify-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#201710]">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#201710]">
             {["Tradición", "Estilo", "Precisión"].map((chip) => (
               <span
                 key={chip}
-                className="rounded-full bg-[#f8eedd] px-3 py-1.5 text-[#201710] shadow-[0_8px_18px_rgba(0,0,0,0.16)] ring-1 ring-[#d4af37]/45"
+                className="rounded-full bg-[#f8eedd] px-2.5 py-1 text-[#201710] shadow-[0_6px_14px_rgba(0,0,0,0.14)] ring-1 ring-[#d4af37]/38"
               >
                 {chip}
               </span>
