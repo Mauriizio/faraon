@@ -498,13 +498,13 @@ export default function ReservarPage() {
               <select
                 value={service}
                 onChange={(e) => setService(e.target.value)}
-                className="rounded-xl border border-[#d4af37]/30 bg-[#0a0a0a] px-3 py-2 text-[#f7f1e3] focus:border-[#d4af37] focus:outline-none"
+                className="w-full min-w-0 rounded-xl border border-[#d4af37]/30 bg-[#0a0a0a] px-3 py-2 text-sm text-[#f7f1e3] focus:border-[#d4af37] focus:outline-none sm:text-base"
               >
                 {services.map((item) => (
                   <option
                     key={item}
                     value={item}
-                    className="bg-[#0a0a0a] text-[#f7f1e3]"
+                    className="bg-[#0a0a0a] text-[#f7f1e3] whitespace-normal"
                   >
                     {item}
                   </option>
