@@ -164,13 +164,13 @@ export default function CatalogoPage() {
   return (
     <SectionShell
       eyebrow="Catálogo"
-      title="Trabajos recientes y acabados faraónicos"
-      description="Explora el portafolio real: fades, pigmentaciones, visos y estilos personalizados. Optimizado para mobile con cuadrícula moderna y scroll fluido."
+      title="Galería de estilos y acabados"
+      description="Explora el portafolio real: fades, pigmentaciones, visos y estilos personalizados."
       className="pb-20"
     >
       <div className="mb-6 flex flex-col gap-3 rounded-xl border border-[#d4af37]/20 bg-black/70 p-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-[#d8d0c0]">
-          Galería curada con los últimos 14 servicios. Toca una imagen en móvil para verla a detalle.
+          Galería con algunos de mis ultimos servicios.
         </p>
         <CTAButton href="/reservar" className="w-full justify-center sm:w-auto">
           Reservar

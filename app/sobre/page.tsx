@@ -14,8 +14,8 @@ const milestones = [
   },
   {
     year: "2024",
-    title: "Faraón digital",
-    detail: "Crea la experiencia mobile-first: reservas ágiles, recordatorios automáticos y estilo boutique en cada visita.",
+    title: "Establecimiento de Faraón Barber",
+    detail: "Inaugura su propio estudio en Santiago, combinando lujo urbano con tradición venezolana.",
   },
 ];
 
@@ -43,9 +43,9 @@ export default function SobrePage() {
             atención puntual y resultados que te recuerden por qué vuelves.
           </p>
           <div className="flex flex-wrap gap-3 text-xs text-[#d4af37]">
-            <span className="rounded-full border border-[#d4af37]/30 px-3 py-1">Cinzel + Lato</span>
-            <span className="rounded-full border border-[#d4af37]/30 px-3 py-1">Diseño Faraón</span>
-            <span className="rounded-full border border-[#d4af37]/30 px-3 py-1">Animaciones suaves</span>
+            <span className="rounded-full border border-[#d4af37]/30 px-3 py-1">Trabajo Certificado</span>
+            <span className="rounded-full border border-[#d4af37]/30 px-3 py-1">Diseños Personalizados</span>
+            <span className="rounded-full border border-[#d4af37]/30 px-3 py-1">Servicio Profesional</span>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <CTAButton href="/reservar">Reserva tu experiencia</CTAButton>
@@ -68,10 +68,10 @@ export default function SobrePage() {
             ))}
           </div>
           <div className="rounded-xl border border-[#4a1f2f]/40 bg-[#4a1f2f]/20 p-4 text-sm text-[#f7f1e3]">
-            <p className="font-semibold">Estilo faraón</p>
+            <p className="font-semibold">UNA HISTORIA DE SUPERACIÓN</p>
             <p className="text-[#d8d0c0]">
-              Una paleta negra, dorada y granate para un ambiente de lujo urbano. Interacciones suaves y accesibles en cualquier
-              dispositivo.
+              Desde mis inicios en Venezuela hasta establecer Faraón Barber en Chile, cada paso ha sido un testimonio de
+              dedicación y pasión por este arte.
             </p>
           </div>
         </div>

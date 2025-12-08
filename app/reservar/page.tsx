@@ -256,8 +256,8 @@ export default function ReservarPage() {
   return (
     <SectionShell
       eyebrow="Reserva principal"
-      title="Agenda profesional con disponibilidad en vivo"
-      description="Calendario compacto con cupos reales y confirmación inmediata."
+      title="Agenda tu cita aqui"
+      description="Calendario compacto con informacion de disponibilidad y formulario de reserva."
       className="!pt-1.5 !pb-4 sm:!pt-2 sm:!pb-6 lg:!pt-2.5 lg:!pb-7"
       headerClassName="items-center text-center lg:w-full"
       headerWidthClassName="w-full"
