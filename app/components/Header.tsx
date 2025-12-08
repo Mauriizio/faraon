@@ -98,19 +98,29 @@ export function Header() {
 
       {/* NAV MOBILE */}
       <div
-        className={`md:hidden ${open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"} fixed inset-0 z-40 transition-opacity duration-250`}
+        className={`md:hidden ${open ? "pointer-events-auto" : "pointer-events-none"} fixed inset-0 z-40 transition-opacity duration-250`}
         aria-hidden={!open}
       >
         <div
-          className="absolute inset-0 bg-black/70 backdrop-blur-md"
+          className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity ${open ? "opacity-100" : "opacity-0"}`}
           onClick={() => setOpen(false)}
         />
         <div
-          className={`absolute left-0 right-0 top-24 mx-4 rounded-2xl border border-[#d4af37]/30 bg-gradient-to-b from-[#0b0b0b]/98 via-[#121010]/96 to-[#0b0b0b]/98 shadow-[0_18px_42px_rgba(0,0,0,0.55)] transition-all duration-300 ${
-            open ? "translate-y-0" : "-translate-y-4"
+          className={`absolute left-1/2 top-4 w-[92%] max-w-xl -translate-x-1/2 rounded-2xl border border-[#d4af37]/35 bg-gradient-to-b from-[#0b0b0b]/95 via-[#141111]/95 to-[#0b0b0b]/95 shadow-[0_18px_42px_rgba(0,0,0,0.55)] transition-all duration-300 ${
+            open ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0"
           }`}
         >
-          <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 text-sm font-semibold text-[#f7f1e3]">
+          <div className="flex items-center justify-between border-b border-[#d4af37]/25 px-4 py-3">
+            <span className="section-title text-lg text-[#f7f1e3]">Menú</span>
+            <button
+              onClick={() => setOpen(false)}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#d4af37]/50 bg-[#161616] text-[#fbe7a1] shadow-[0_8px_20px_rgba(0,0,0,0.35)] transition hover:border-[#f0d26a] hover:bg-[#1d1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37]"
+              aria-label="Cerrar menú"
+            >
+              ✕
+            </button>
+          </div>
+          <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-4 text-sm font-semibold text-[#f7f1e3]">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -124,7 +134,6 @@ export function Header() {
                 </div>
               </Link>
             ))}
-            {/* CTA principal también en mobile */}
             <CTAButton
               href="/reservar"
               className="w-full justify-center"

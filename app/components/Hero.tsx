@@ -3,19 +3,19 @@ import { CTAButton } from "./CTAButton";
 
 export function Hero() {
   return (
-    <section className="hero-shell relative overflow-hidden bg-[#f8f2e6] pb-16 pt-14 text-[#1b1b1b] sm:pt-16 lg:pb-24 lg:pt-20">
+    <section className="hero-shell relative flex min-h-screen items-center overflow-hidden bg-[#f8f2e6] pb-16 pt-20 text-[#1b1b1b] sm:pt-20 lg:pb-24 lg:pt-24">
       <div className="hero-stripes" aria-hidden />
       <div className="absolute inset-0 bg-gradient-to-b from-[#fdf8f0] via-[#f7f1e6] to-[#f1e6d5]" aria-hidden />
 
       <div className="relative mx-auto flex max-w-5xl flex-col items-center px-4 text-center sm:px-6 lg:px-8">
-        <div className="fade-up relative flex w-full flex-col items-center gap-6 rounded-[32px] border border-[#d4af37]/55 bg-white/92 px-6 py-8 shadow-[0_18px_40px_rgba(0,0,0,0.1)] sm:px-10 sm:py-12">
+        <div className="fade-up relative flex w-full flex-col items-center gap-8 rounded-[36px] border border-[#d4af37]/55 bg-white/94 px-7 py-10 shadow-[0_18px_40px_rgba(0,0,0,0.1)] sm:px-12 sm:py-14">
           <div className="hero-poles" aria-hidden />
           <Image
             src="/logo.png"
             alt="Logotipo Faraón Barber"
             width={640}
             height={640}
-            className="h-full w-full max-h-[360px] max-w-[360px] object-contain drop-shadow-[0_18px_45px_rgba(0,0,0,0.15)] sm:max-h-[420px] sm:max-w-[420px]"
+            className="h-full w-full max-h-[420px] max-w-[420px] object-contain drop-shadow-[0_18px_45px_rgba(0,0,0,0.18)] sm:max-h-[480px] sm:max-w-[480px]"
             priority
           />
 
