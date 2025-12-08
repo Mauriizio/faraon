@@ -369,7 +369,7 @@ export default function ReservarPage() {
                   ))}
                 </div>
 
-                <div className="grid grid-cols-7 gap-1 rounded-xl bg-[#0f0f0f] p-2 sm:gap-1.5 lg:gap-2 lg:p-3.5">
+                <div className="grid grid-cols-7 gap-1 rounded-xl bg-[#0f0f0f] p-2 sm:gap-[0.32rem] lg:gap-[0.4rem] lg:p-3.5">
                   {weeks.map((week, idx) => (
                     <div key={idx} className="contents">
                       {week.map((day, dayIdx) => {
@@ -395,7 +395,7 @@ export default function ReservarPage() {
                               setSelectedSlot(null);
                             }}
                             disabled={disabled}
-                            className={`group relative flex aspect-square w-full flex-col items-center justify-center gap-1.5 overflow-hidden rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-1.5 py-1.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] sm:px-2 sm:py-2 lg:px-3.5 lg:py-3.5 lg:text-[13px] ${statusColor(
+                            className={`group relative flex aspect-square w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-2 py-2 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] sm:px-2.5 sm:py-2.5 lg:px-4 lg:py-4 lg:text-[13px] ${statusColor(
                               day.status,
                             )} ${
                               isActive
