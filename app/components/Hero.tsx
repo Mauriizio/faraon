@@ -11,27 +11,27 @@ export function Hero() {
       <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center gap-6 text-center sm:gap-7 lg:max-w-6xl">
         <div className="fade-up relative flex items-center justify-center">
           <div className="absolute inset-[-12%] rounded-full bg-[radial-gradient(circle,_rgba(237,223,186,0.28),_transparent_62%)] blur-2xl" aria-hidden />
-          <div className="relative flex h-[248px] w-[248px] items-center justify-center rounded-full bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.82)_0%,_rgba(244,214,156,0.56)_46%,_rgba(17,14,12,0.95)_78%)] p-3 shadow-[0_18px_42px_rgba(0,0,0,0.42)] ring-1 ring-[#d4af37]/70 sm:h-[268px] sm:w-[268px] lg:h-[286px] lg:w-[286px]">
+          <div className="relative flex h-[264px] w-[264px] items-center justify-center rounded-full bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.9)_0%,_rgba(244,214,156,0.6)_44%,_rgba(17,14,12,0.95)_78%)] p-3 shadow-[0_18px_42px_rgba(0,0,0,0.42)] ring-1 ring-[#d4af37]/70 sm:h-[284px] sm:w-[284px] lg:h-[298px] lg:w-[298px]">
             <div className="absolute inset-3 rounded-full border border-[#d4af37]/48" aria-hidden />
-            <div className="absolute inset-1.5 rounded-full bg-[radial-gradient(circle,_rgba(255,255,255,0.82)_0%,_rgba(240,215,165,0.52)_45%,_rgba(0,0,0,0)_72%)]" aria-hidden />
-            <div className="absolute inset-[14%] rounded-full bg-white/82 shadow-[0_14px_28px_rgba(0,0,0,0.24)]" aria-hidden />
+            <div className="absolute inset-1.5 rounded-full bg-[radial-gradient(circle,_rgba(255,255,255,0.88)_0%,_rgba(240,215,165,0.52)_42%,_rgba(0,0,0,0)_70%)]" aria-hidden />
+            <div className="absolute inset-[10%] rounded-full bg-white/88 shadow-[0_14px_28px_rgba(0,0,0,0.24)]" aria-hidden />
             <Image
               src="/logo.png"
               alt="Logotipo Faraón Barber"
               width={640}
               height={640}
-              className="h-full w-full max-h-[224px] max-w-[224px] object-contain drop-shadow-[0_18px_42px_rgba(0,0,0,0.32)] sm:max-h-[240px] sm:max-w-[240px] lg:max-h-[258px] lg:max-w-[258px]"
+              className="h-full w-full max-h-[236px] max-w-[236px] object-contain drop-shadow-[0_18px_42px_rgba(0,0,0,0.32)] sm:max-h-[248px] sm:max-w-[248px] lg:max-h-[262px] lg:max-w-[262px]"
               priority
             />
           </div>
         </div>
 
         <div className="fade-up flex flex-col items-center gap-4">
-          <div className="flex flex-wrap items-center justify-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#201710]">
+          <div className="flex flex-wrap items-center justify-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#201710]">
             {["Tradición", "Estilo", "Precisión"].map((chip) => (
               <span
                 key={chip}
-                className="rounded-full bg-[#f8eedd] px-3.5 py-2 text-[#201710] shadow-[0_10px_26px_rgba(0,0,0,0.18)] ring-1 ring-[#d4af37]/45"
+                className="rounded-full bg-[#f8eedd] px-3 py-1.5 text-[#201710] shadow-[0_8px_18px_rgba(0,0,0,0.16)] ring-1 ring-[#d4af37]/45"
               >
                 {chip}
               </span>

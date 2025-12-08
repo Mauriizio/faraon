@@ -133,19 +133,16 @@ a {
 .hero-poles::after {
   content: "";
   position: absolute;
-  top: -5%;
-  width: clamp(42px, 6vw, 62px);
-  height: 112%;
-  background-image: linear-gradient(
+  top: -6%;
+  width: clamp(52px, 7vw, 76px);
+  height: 114%;
+  background-image: repeating-linear-gradient(
     135deg,
-    #c1121f 0 20px,
-    #ffffff 20px 40px,
-    #1f3c88 40px 60px,
-    #ffffff 60px 80px,
-    #c1121f 80px 100px,
-    #ffffff 100px 120px
+    #c1121f 0 28px,
+    #ffffff 28px 56px,
+    #1f3c88 56px 84px,
+    #ffffff 84px 112px
   );
-  background-size: 100% 120px;
   background-repeat: repeat-y;
   border-radius: 999px;
   box-shadow: 0 18px 32px rgba(0, 0, 0, 0.18);
@@ -174,7 +171,7 @@ a {
 @media (max-width: 768px) {
   .hero-poles::before,
   .hero-poles::after {
-    width: clamp(28px, 6vw, 40px);
+    width: clamp(34px, 7vw, 46px);
     height: 106%;
     opacity: 0.52;
   }
@@ -195,7 +192,7 @@ a {
     background-position: 0 0;
   }
   100% {
-    background-position: 0 120px;
+    background-position: 0 112px;
   }
 }
 
