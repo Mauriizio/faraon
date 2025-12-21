@@ -60,9 +60,9 @@ export default function HomePage() {
       <Hero />
 
       <SectionShell
-        eyebrow="Portada pro"
+        eyebrow="El Faraón en acción"
         title="Portafolio en vivo y agenda rápida"
-        description="Mira acabados reales y el mismo calendario interactivo que encontrarás al reservar."
+        description="Mira acabados reales de mis trabajos en el catalogo."
         className="pt-4"
       >
         <div className="grid items-stretch gap-6 lg:grid-cols-[1.05fr_0.95fr]">
@@ -77,11 +77,11 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" aria-hidden />
             <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-center justify-between gap-3 px-5 pb-5">
               <div className="rounded-2xl border border-[#d4af37]/30 bg-black/70 px-4 py-3 shadow-[0_12px_30px_rgba(0,0,0,0.4)]">
-                <p className="section-title text-lg font-semibold text-[#f7f1e3]">Fade gourmet</p>
+                <p className="section-title text-lg font-semibold text-[#f7f1e3]">Servicio Gourmet</p>
                 <p className="text-sm text-[#e7decf]">Texturas pulidas, contornos nítidos y final con navaja caliente.</p>
               </div>
-              <CTAButton href="/reservar" className="w-full justify-center sm:w-auto">
-                Reservar este estilo
+              <CTAButton href="/servicios" className="w-full justify-center sm:w-auto">
+                Ver Catalogo completo
               </CTAButton>
             </div>
           </div>
@@ -89,8 +89,8 @@ export default function HomePage() {
           <div className="glass-panel panel-hover flex flex-col gap-4 rounded-3xl p-5 sm:p-6">
             <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
               <div>
-                <p className="small-caps text-[11px] text-[#d4af37]">Disponibilidad demo</p>
-                <p className="section-title text-xl font-semibold text-[#f7f1e3]">Calendario con más espacio</p>
+                <p className="small-caps text-[11px] text-[#d4af37]">Disponibilidad</p>
+                <p className="section-title text-xl font-semibold text-[#f7f1e3]">Los dias en verde tengo horas disponibles</p>
               </div>
               <CTAButton
                 href="/reservar"
@@ -135,7 +135,7 @@ export default function HomePage() {
               </div>
             </div>
             <p className="text-sm text-[#d8d0c0]">
-              La agenda real muestra estados en vivo. Aquí ves el mismo espaciado cómodo que aplicamos en Reservas.
+              Dale click al botón para abrir la agenda completa con horarios en vivo, y confirmar tu reserva al instante.
             </p>
           </div>
         </div>

@@ -112,16 +112,6 @@ function buildDayAvailability(
   };
 }
 
-function statusBadgeClasses(status: AvailabilityStatus) {
-  if (status === "disponible") {
-    return "rounded-md bg-emerald-500/18 text-emerald-200 ring-1 ring-emerald-500/40";
-  }
-  if (status === "sin-cupos") {
-    return "rounded-md bg-amber-500/18 text-amber-100 ring-1 ring-amber-500/40";
-  }
-  return "rounded-md bg-rose-700/30 text-rose-100 ring-1 ring-rose-700/60";
-}
-
 function statusColor(status: AvailabilityStatus) {
   if (status === "disponible") {
     return "bg-emerald-500/20 text-emerald-100 ring-1 ring-emerald-500/40";
@@ -266,16 +256,16 @@ export default function ReservarPage() {
   return (
     <SectionShell
       eyebrow="Reserva principal"
-      title="Agenda profesional con disponibilidad en vivo"
-      description="Calendario compacto con cupos reales y confirmación inmediata."
-      className="pt-3 pb-5 sm:pt-4 sm:pb-7"
+      title="Agenda tu cita aqui"
+      description="Calendario compacto con informacion de disponibilidad y formulario de reserva."
+      className="!pt-1.5 !pb-4 sm:!pt-2 sm:!pb-6 lg:!pt-2.5 lg:!pb-7"
       headerClassName="items-center text-center lg:w-full"
       headerWidthClassName="w-full"
       titleClassName="mx-auto max-w-5xl text-pretty text-lg sm:text-xl lg:text-[22px] lg:leading-[1.2]"
       descriptionClassName="mx-auto max-w-3xl text-[11px] sm:text-sm"
     >
-      <div className="mx-auto grid w-full max-w-5xl items-start gap-2 sm:gap-3 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="glass-panel panel-hover flex min-w-0 flex-col gap-2 rounded-2xl p-2.5 sm:p-3">
+      <div className="mx-auto grid w-full max-w-[1600px] items-start gap-2 sm:gap-3 lg:grid-cols-[1.34fr_0.82fr] lg:items-stretch">
+        <div className="glass-panel panel-hover flex min-w-0 flex-col gap-2 rounded-2xl p-2.5 sm:p-3 lg:h-full">
           <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
             <div>
               <p className="small-caps text-[10px] text-[#d4af37]">
@@ -305,8 +295,8 @@ export default function ReservarPage() {
             </span>
           </div>
 
-          <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-[1fr_0.9fr] sm:items-start">
-            <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-2.5 sm:p-3 w-full mx-auto">
+          <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-[1fr_0.9fr] sm:items-start lg:grid-cols-[1.26fr_0.74fr] lg:items-stretch">
+            <div className="mx-auto w-full max-w-[860px] rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-2.5 sm:p-3 lg:max-w-none lg:h-full lg:p-3.5">
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
                   <div>
@@ -361,7 +351,7 @@ export default function ReservarPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-7 gap-2 text-center text-[11px] font-semibold uppercase tracking-wide text-[#d8d0c0]">
+                <div className="grid grid-cols-7 gap-1 text-center text-[11px] font-semibold uppercase tracking-wide text-[#d8d0c0] sm:gap-1.5 lg:gap-2">
                   {weekDayLabels.map((label) => (
                     <span key={label} className="py-1">
                       {label}
@@ -369,7 +359,7 @@ export default function ReservarPage() {
                   ))}
                 </div>
 
-                <div className="grid grid-cols-7 gap-2.5 rounded-xl bg-[#0f0f0f] p-3 sm:gap-3 sm:p-4">
+                <div className="grid grid-cols-7 gap-1 rounded-xl bg-[#0f0f0f] p-2 sm:gap-[0.32rem] lg:gap-[0.4rem] lg:p-3.5">
                   {weeks.map((week, idx) => (
                     <div key={idx} className="contents">
                       {week.map((day, dayIdx) => {
@@ -395,7 +385,7 @@ export default function ReservarPage() {
                               setSelectedSlot(null);
                             }}
                             disabled={disabled}
-                            className={`group flex aspect-square min-h-[74px] w-full flex-col items-center justify-center gap-2 rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-2.5 py-2.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${statusColor(
+                            className={`group relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-2 py-2 text-center text-[13px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] sm:px-2.5 sm:py-2.5 sm:text-[14px] lg:px-4 lg:py-4 lg:text-[17px] ${statusColor(
                               day.status,
                             )} ${
                               isActive
@@ -408,19 +398,8 @@ export default function ReservarPage() {
                                 : "no disponible"
                             }`}
                           >
-                            <span className="text-[13px] leading-none text-[#f7f1e3]">
+                            <span className="leading-none text-[#f7f1e3]">
                               {day.date.getDate().toString().padStart(2, "0")}
-                            </span>
-                            <span
-                              className={`inline-flex min-w-[44px] items-center justify-center rounded-md px-2 py-1 text-[10px] font-semibold leading-tight ${statusBadgeClasses(
-                                day.status,
-                              )}`}
-                            >
-                              {day.status === "disponible"
-                                ? day.availableSlots.length
-                                : day.status === "⛔"
-                                  ? "⛔"
-                                  : "Full"}
                             </span>
                           </button>
                         );
@@ -431,7 +410,7 @@ export default function ReservarPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#0b0b0b]/80 p-2.5 sm:p-3 max-w-[520px] w-full mx-auto h-full">
+            <div className="rounded-2xl border border-[#d4af37]/30 bg-[#0b0b0b]/80 p-2.5 sm:p-3 max-w-[560px] w-full mx-auto h-full lg:max-w-[620px] lg:p-3.5 lg:h-full lg:self-stretch lg:min-h-0">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="text-sm font-semibold text-[#f7f1e3]">
                   Horarios del día
@@ -472,7 +451,7 @@ export default function ReservarPage() {
 
         <form
           onSubmit={handleSubmit}
-          className="glass-panel panel-hover mx-auto flex w-full max-w-[500px] min-w-0 flex-col gap-2 rounded-2xl p-3"
+          className="glass-panel panel-hover mx-auto flex w-full max-w-[520px] min-w-0 flex-col gap-2 rounded-2xl p-3 lg:max-w-[600px] lg:h-full lg:self-stretch lg:p-3.5"
         >
           <div className="text-center">
             <p className="small-caps text-[10px] text-[#d4af37]">Confirmación</p>
@@ -519,13 +498,14 @@ export default function ReservarPage() {
               <select
                 value={service}
                 onChange={(e) => setService(e.target.value)}
-                className="rounded-xl border border-[#d4af37]/30 bg-[#0a0a0a] px-3 py-2 text-[#f7f1e3] focus:border-[#d4af37] focus:outline-none"
+                className="w-full min-w-0 max-w-full rounded-xl border border-[#d4af37]/30 bg-[#0a0a0a] px-3 py-2 text-[13px] leading-tight text-[#f7f1e3] focus:border-[#d4af37] focus:outline-none sm:text-base sm:leading-normal"
               >
                 {services.map((item) => (
                   <option
                     key={item}
                     value={item}
-                    className="bg-[#0a0a0a] text-[#f7f1e3]"
+                    className="bg-[#0a0a0a] text-[#f7f1e3] whitespace-normal"
+                    style={{ whiteSpace: "normal", wordBreak: "break-word", fontSize: "13px", lineHeight: "1.3" }}
                   >
                     {item}
                   </option>
