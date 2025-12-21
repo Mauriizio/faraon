@@ -68,28 +68,28 @@ export function Header() {
         {/* BOTÓN MOBILE */}
         <button
           onClick={toggleMenu}
-          className="group relative flex h-12 w-12 items-center justify-center rounded-full border border-[#d4af37]/50 bg-gradient-to-b from-[#0c0c0c] via-[#121212] to-[#0c0c0c] text-[#f7f1e3] shadow-[0_0_0_1px_rgba(212,175,55,0.2),0_10px_30px_-12px_rgba(0,0,0,0.6)] transition hover:border-[#d4af37]/80 hover:shadow-[0_0_0_1px_rgba(212,175,55,0.35),0_12px_36px_-10px_rgba(0,0,0,0.65)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] md:hidden"
+          className="group relative flex h-12 w-12 items-center justify-center rounded-full border border-[#d4af37]/55 bg-gradient-to-b from-[#0c0c0c] via-[#121010] to-[#0a0a0a] text-[#f7f1e3] shadow-[0_0_0_1px_rgba(212,175,55,0.22),0_10px_30px_-12px_rgba(0,0,0,0.6)] transition hover:border-[#d4af37]/80 hover:shadow-[0_0_0_1px_rgba(212,175,55,0.35),0_12px_36px_-10px_rgba(0,0,0,0.65)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] md:hidden"
           aria-expanded={open}
           aria-label={open ? "Cerrar menú" : "Abrir menú"}
         >
           <span
-            className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle,_rgba(212,175,55,0.16),_transparent_55%)] blur-2xl opacity-0 transition group-hover:opacity-40"
+            className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle,_rgba(212,175,55,0.2),_transparent_55%)] blur-2xl opacity-0 transition group-hover:opacity-40"
             aria-hidden
           />
           <div className="relative h-5 w-7">
             <span
-              className={`absolute left-0 h-0.5 w-6 rounded-full bg-[#d4af37] transition duration-300 ${
-                open ? "translate-y-2 rotate-45" : "translate-y-0"
+              className={`absolute inset-x-0 top-0 block h-0.5 rounded-full bg-[#f7d774] shadow-[0_0_6px_rgba(0,0,0,0.45)] transition duration-300 ${
+                open ? "top-2.5 rotate-45" : "top-0"
               }`}
             />
             <span
-              className={`absolute left-0 h-0.5 w-7 rounded-full bg-[#d4af37] transition duration-300 ${
-                open ? "opacity-0" : "translate-y-2"
+              className={`absolute inset-x-0 top-2.5 block h-0.5 rounded-full bg-[#f7d774] shadow-[0_0_6px_rgba(0,0,0,0.45)] transition duration-300 ${
+                open ? "opacity-0" : "opacity-100"
               }`}
             />
             <span
-              className={`absolute right-0 h-0.5 w-5 rounded-full bg-[#d4af37] transition duration-300 ${
-                open ? "-translate-y-2 -rotate-45" : "translate-y-4"
+              className={`absolute inset-x-0 top-5 block h-0.5 rounded-full bg-[#f7d774] shadow-[0_0_6px_rgba(0,0,0,0.45)] transition duration-300 ${
+                open ? "top-2.5 -rotate-45" : "top-5"
               }`}
             />
           </div>
@@ -98,32 +98,41 @@ export function Header() {
 
       {/* NAV MOBILE */}
       <div
-        className={`md:hidden transition-[max-height,opacity] duration-300 ease-in-out ${
-          open ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
-        } overflow-hidden border-t border-[#d4af37]/15 bg-[#050505]/95 backdrop-blur-lg`}
+        className={`md:hidden ${open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"} fixed inset-0 z-40 transition-opacity duration-250`}
+        aria-hidden={!open}
       >
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 text-sm font-medium text-[#f7f1e3]">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="rounded-lg border border-transparent px-4 py-3 transition hover:border-[#d4af37]/40 hover:bg-[#0f0f0f]"
+        <div
+          className="absolute inset-0 bg-black/70 backdrop-blur-md"
+          onClick={() => setOpen(false)}
+        />
+        <div
+          className={`absolute left-0 right-0 top-24 mx-4 rounded-2xl border border-[#d4af37]/30 bg-gradient-to-b from-[#0b0b0b]/98 via-[#121010]/96 to-[#0b0b0b]/98 shadow-[0_18px_42px_rgba(0,0,0,0.55)] transition-all duration-300 ${
+            open ? "translate-y-0" : "-translate-y-4"
+          }`}
+        >
+          <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 text-sm font-semibold text-[#f7f1e3]">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-xl border border-transparent px-4 py-3 transition hover:border-[#d4af37]/50 hover:bg-[#141414]"
+                onClick={() => setOpen(false)}
+              >
+                <div className="flex items-center justify-between">
+                  <span>{item.label}</span>
+                  <span className="text-xs text-[#d4af37]">→</span>
+                </div>
+              </Link>
+            ))}
+            {/* CTA principal también en mobile */}
+            <CTAButton
+              href="/reservar"
+              className="w-full justify-center"
               onClick={() => setOpen(false)}
             >
-              <div className="flex items-center justify-between">
-                <span>{item.label}</span>
-                <span className="text-xs text-[#d4af37]">→</span>
-              </div>
-            </Link>
-          ))}
-          {/* CTA principal también en mobile */}
-          <CTAButton
-            href="/reservar"
-            className="w-full justify-center"
-            onClick={() => setOpen(false)}
-          >
-            Reservar ahora
-          </CTAButton>
+              Reservar ahora
+            </CTAButton>
+          </div>
         </div>
       </div>
     </header>

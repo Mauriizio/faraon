@@ -114,12 +114,12 @@ function buildDayAvailability(
 
 function statusBadgeClasses(status: AvailabilityStatus) {
   if (status === "disponible") {
-    return "bg-emerald-500/15 text-emerald-200 ring-1 ring-emerald-500/40";
+    return "rounded-md bg-emerald-500/18 text-emerald-200 ring-1 ring-emerald-500/40";
   }
   if (status === "sin-cupos") {
-    return "bg-amber-500/15 text-amber-100 ring-1 ring-amber-500/40";
+    return "rounded-md bg-amber-500/18 text-amber-100 ring-1 ring-amber-500/40";
   }
-  return "bg-rose-700/30 text-rose-100 ring-1 ring-rose-700/60";
+  return "rounded-md bg-rose-700/30 text-rose-100 ring-1 ring-rose-700/60";
 }
 
 function statusColor(status: AvailabilityStatus) {
@@ -305,131 +305,129 @@ export default function ReservarPage() {
             </span>
           </div>
 
-          <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-[1fr_0.9fr] sm:items-start">
-            <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-2.5 sm:p-3 max-w-[520px] w-full mx-auto">
-              <div className="mb-2 flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-wide text-[#d4af37]">
-                    Calendario
-                  </p>
-                  <p className="text-[10px] text-[#d8d0c0]">
-                    Selecciona directamente el día disponible.
-                  </p>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const minMonth = new Date(
-                        today.getFullYear(),
-                        today.getMonth(),
-                        1,
-                      );
-                      if (currentMonth <= minMonth) return;
-                      const prev = new Date(currentMonth);
-                      prev.setMonth(prev.getMonth() - 1);
-                      setCurrentMonth(prev);
-                      setSelectedSlot(null);
-                      setSelectedDateKey(undefined);
-                    }}
-                    className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-2 py-1 text-[11px] font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60 disabled:cursor-not-allowed disabled:opacity-40"
-                    aria-label="Mes anterior"
-                    disabled={
-                      currentMonth <=
-                      new Date(today.getFullYear(), today.getMonth(), 1)
-                    }
-                  >
-                    ←
-                  </button>
-                  <span className="rounded-full bg-[#0f0b0b] px-3 py-1 text-[11px] font-semibold text-[#f7f1e3] ring-1 ring-[#d4af37]/30">
-                    {currentMonth.toLocaleDateString("es-ES", {
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const next = new Date(currentMonth);
-                      next.setMonth(next.getMonth() + 1);
-                      setCurrentMonth(next);
-                      setSelectedSlot(null);
-                      setSelectedDateKey(undefined);
-                    }}
-                    className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-2 py-1 text-[11px] font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60"
-                    aria-label="Mes siguiente"
-                  >
-                    →
-                  </button>
-                </div>
-              </div>
-
-              <div className="mb-1 grid grid-cols-7 text-center text-[10px] font-semibold uppercase tracking-wide text-[#d8d0c0]">
-                {weekDayLabels.map((label) => (
-                  <span key={label} className="py-1">
-                    {label}
-                  </span>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-7 gap-0.5 rounded-xl bg-[#0f0f0f] p-1.5 sm:gap-0.5 sm:p-2">
-                {weeks.map((week, idx) => (
-                  <div key={idx} className="contents">
-                    {week.map((day, dayIdx) => {
-                      if (!day) {
-                        return (
-                          <div
-                            key={`empty-${idx}-${dayIdx}`}
-                            className="aspect-square rounded-lg"
-                            aria-hidden
-                          />
-                        );
-                      }
-
-                      const isActive = day.key === selectedDateKey;
-                      const disabled = day.status !== "disponible";
-
-                      return (
-                        <button
-                          key={day.key}
-                          onClick={() => {
-                            if (disabled) return;
-                            setSelectedDateKey(day.key);
-                            setSelectedSlot(null);
-                          }}
-                          disabled={disabled}
-                          className={`group flex aspect-square min-h-[28px] w-full flex-col items-center justify-center gap-0.5 rounded-lg px-1 py-1 text-center text-[9px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${statusColor(
-                            day.status,
-                          )} ${
-                            isActive
-                              ? "shadow-[0_0_0_1px_rgba(212,175,55,0.6),0_6px_18px_rgba(0,0,0,0.25)]"
-                              : "shadow-[0_4px_14px_rgba(0,0,0,0.18)]"
-                          } ${disabled ? "opacity-70" : "hover:scale-[1.005]"}`}
-                          aria-label={`Día ${day.label} ${
-                            day.status === "disponible"
-                              ? "disponible"
-                              : "no disponible"
-                          }`}
-                        >
-                          <span className="text-[10px] leading-none text-[#f7f1e3]">
-                            {day.date.getDate().toString().padStart(2, "0")}
-                          </span>
-                          <span
-                            className={`rounded-full px-1 py-0.5 text-[8px] font-semibold leading-tight ${statusBadgeClasses(
-                              day.status,
-                            )}`}
-                          >
-                            {day.status === "disponible"
-                              ? day.availableSlots.length
-                              : day.status === "⛔"
-                              ? "⛔"
-                              : "Full"}
-                          </span>
-                        </button>
-                      );
-                    })}
+          <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-[1fr_0.9fr] sm:items-start">
+            <div className="rounded-2xl border border-[#d4af37]/25 bg-[#0b0b0b]/80 p-2.5 sm:p-3 w-full mx-auto">
+              <div className="space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-[#d4af37]">Calendario</p>
+                    <p className="text-[10px] text-[#d8d0c0]">Selecciona directamente el día disponible.</p>
                   </div>
-                ))}
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const minMonth = new Date(
+                          today.getFullYear(),
+                          today.getMonth(),
+                          1,
+                        );
+                        if (currentMonth <= minMonth) return;
+                        const prev = new Date(currentMonth);
+                        prev.setMonth(prev.getMonth() - 1);
+                        setCurrentMonth(prev);
+                        setSelectedSlot(null);
+                        setSelectedDateKey(undefined);
+                      }}
+                      className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-2 py-1 text-[11px] font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60 disabled:cursor-not-allowed disabled:opacity-40"
+                      aria-label="Mes anterior"
+                      disabled={
+                        currentMonth <=
+                        new Date(today.getFullYear(), today.getMonth(), 1)
+                      }
+                    >
+                      ←
+                    </button>
+                    <span className="rounded-full bg-[#0f0b0b] px-3 py-1 text-[11px] font-semibold text-[#f7f1e3] ring-1 ring-[#d4af37]/30">
+                      {currentMonth.toLocaleDateString("es-ES", {
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const next = new Date(currentMonth);
+                        next.setMonth(next.getMonth() + 1);
+                        setCurrentMonth(next);
+                        setSelectedSlot(null);
+                        setSelectedDateKey(undefined);
+                      }}
+                      className="rounded-full border border-[#d4af37]/30 bg-[#0f0b0b] px-2 py-1 text-[11px] font-semibold text-[#f7f1e3] transition hover:border-[#d4af37]/60"
+                      aria-label="Mes siguiente"
+                    >
+                      →
+                    </button>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-7 gap-2 text-center text-[11px] font-semibold uppercase tracking-wide text-[#d8d0c0]">
+                  {weekDayLabels.map((label) => (
+                    <span key={label} className="py-1">
+                      {label}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-7 gap-2.5 rounded-xl bg-[#0f0f0f] p-3 sm:gap-3 sm:p-4">
+                  {weeks.map((week, idx) => (
+                    <div key={idx} className="contents">
+                      {week.map((day, dayIdx) => {
+                        if (!day) {
+                          return (
+                            <div
+                              key={`empty-${idx}-${dayIdx}`}
+                              className="aspect-square rounded-lg"
+                              aria-hidden
+                            />
+                          );
+                        }
+
+                        const isActive = day.key === selectedDateKey;
+                        const disabled = day.status !== "disponible";
+
+                        return (
+                          <button
+                            key={day.key}
+                            onClick={() => {
+                              if (disabled) return;
+                              setSelectedDateKey(day.key);
+                              setSelectedSlot(null);
+                            }}
+                            disabled={disabled}
+                            className={`group flex aspect-square min-h-[74px] w-full flex-col items-center justify-center gap-2 rounded-lg border border-[#d4af37]/25 bg-[#0c0c0c] px-2.5 py-2.5 text-center text-[11px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37] ${statusColor(
+                              day.status,
+                            )} ${
+                              isActive
+                                ? "shadow-[0_0_0_1px_rgba(212,175,55,0.6),0_6px_18px_rgba(0,0,0,0.25)]"
+                                : "shadow-[0_6px_18px_rgba(0,0,0,0.25)]"
+                            } ${disabled ? "opacity-70" : "hover:-translate-y-0.5"}`}
+                            aria-label={`Día ${day.label} ${
+                              day.status === "disponible"
+                                ? "disponible"
+                                : "no disponible"
+                            }`}
+                          >
+                            <span className="text-[13px] leading-none text-[#f7f1e3]">
+                              {day.date.getDate().toString().padStart(2, "0")}
+                            </span>
+                            <span
+                              className={`inline-flex min-w-[44px] items-center justify-center rounded-md px-2 py-1 text-[10px] font-semibold leading-tight ${statusBadgeClasses(
+                                day.status,
+                              )}`}
+                            >
+                              {day.status === "disponible"
+                                ? day.availableSlots.length
+                                : day.status === "⛔"
+                                  ? "⛔"
+                                  : "Full"}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
